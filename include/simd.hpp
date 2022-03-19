@@ -1,12 +1,29 @@
 #pragma once
+#include <string>
 
-typedef float float2 __attribute__ ((vector_size (8)));
-typedef float2 vec2;
-typedef float float4 __attribute__ ((vector_size (16)));
-typedef float4 vec4;
+struct float2
+{
+    public:
+        float2();
+        float2(float x, float y);
 
-float sqrlength2(float2& vec);
-float length2(float2& vec);
+        float x;
+        float y;
+        float length();
+        float squared_length();
+        void normalize();
+        float2 normalized();
+        std::string to_string();
 
-float sqrlength3(float4& vec);
-float length3(float4& vec);
+        float2 operator+(float2 o);
+        float2 operator-(float2 o);
+        float2 operator*(float s);
+        float2 operator/(float s);
+        void operator+=(float2 o);
+        void operator-=(float2 o);
+        void operator*=(float s);
+        void operator/=(float s);
+
+        static float distance(float2 a, float2 b);
+        static float squared_distance(float2 a, float2 b);
+};

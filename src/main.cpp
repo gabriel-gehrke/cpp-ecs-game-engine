@@ -1,26 +1,28 @@
 #include "simd.hpp"
-#include "entity.hpp"
+#include "graphics.hpp"
+#include "random.hpp"
+#include <SDL2/SDL.h>
 #include <iostream>
 
 int main()
 {
-    float4 a = {1, 2, 3, 0};
-    float4 b = {2, 1, 0, 69};
-    auto c = a + b;
-    for (auto i = 0; i < 4; i++)
-    {
-        std::cout << c[i] << "\n";
-    }
-    std::cout << "\n";
-    auto d = c * 3.0f;
-    for (auto i = 0; i < 4; i++)
-    {
-        std::cout << d[i] << "\n";
-    }
-    std::cout << "\n";
+    Graphics g = Graphics(400, 200);
 
-    Entity player = Entity();
-    std::cout << player.id << "\n";
+    SDL_Event event;
+
+    uint x = 200 - 25;
+
+    while(!(event.type == SDL_QUIT)){
+        SDL_Delay(10);  // setting some Delay
+
+        g.clear();
+
+        g.draw_rectangle(x, 20, 50, 50, Color(255, 0, 0));
+        x += (rand() % 3) - 1;
+
+        g.refresh();
+        SDL_PollEvent(&event);  // Catching the poll event.
+    }
 
     return 0;
 }
