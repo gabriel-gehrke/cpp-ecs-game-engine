@@ -1,5 +1,5 @@
 #include "simd.hpp"
-#include "graphics.hpp"
+#include "rendering/graphics.hpp"
 #include "random.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>

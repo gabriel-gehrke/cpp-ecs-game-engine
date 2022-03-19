@@ -11,6 +11,16 @@ float2::float2(float x, float y)
     this->y = y;
 }
 
+float2 float2::zero()
+{
+    return float2();
+}
+
+float2 float2::one()
+{
+    return float2(1, 1);
+}
+
 float float2::squared_length()
 {
     return this->x * this->x + this->y * this->y;
@@ -40,22 +50,22 @@ std::string float2::to_string()
     return "(" + std::to_string(this->x) + ", " + std::to_string(this->y) + ")";
 }
 
-float2 float2::operator+(float2 o)
+float2 float2::operator+(float2 o) const
 {
     return float2(this->x + o.x, this->y + o.y);
 }
 
-float2 float2::operator-(float2 o)
+float2 float2::operator-(float2 o) const
 {
     return float2(this->x - o.x, this->y - o.y);
 }
 
-float2 float2::operator*(float s)
+float2 float2::operator*(float s) const
 {
     return float2(this->x * s, this->y * s);
 }
 
-float2 float2::operator/(float s)
+float2 float2::operator/(float s) const
 {
     return float2(this->x / s, this->y / s);
 }

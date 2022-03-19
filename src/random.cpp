@@ -1,5 +1,7 @@
 #include "random.hpp"
-#include <ctime>
+#include <cstdlib>
+#include <sys/time.h>
+#include <iostream>
 
 static bool was_seeded = false;
 
@@ -7,7 +9,20 @@ static void seed()
 {
     if (was_seeded) return;
 
-    srand(time(NULL));
+    // get time
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+
+    // generate time from xoring time bytes
+    uint* ptr = (uint*) &tv;
+    uint seed = 0;
+    for (auto i = 0; i < sizeof(timeval) / sizeof(uint); i++)
+    {
+        seed ^= *ptr++;
+    }
+
+    // seed the rng from cstdlib
+    srand(seed);
     was_seeded = true;
 }
 

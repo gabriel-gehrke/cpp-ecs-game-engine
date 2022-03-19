@@ -1,4 +1,4 @@
-#include "graphics.hpp"
+#include "rendering/graphics.hpp"
 
 Color::Color(u_char grey) : Color(grey, grey, grey){}
 Color::Color(u_char r, u_char g, u_char b) : Color(r, g, b, SDL_ALPHA_OPAQUE){}
@@ -13,9 +13,14 @@ Color Color::black() {return Color(0,0,0);}
 Color Color::white() {return Color(255,255,255);}
 
 
+static volatile uint __num_graphics = 0;
+
 Graphics::Graphics(uint w, uint h)
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    if (__num_graphics++ == 0)
+    {
+        SDL_Init(SDL_INIT_VIDEO);
+    }
     SDL_CreateWindowAndRenderer(w, h, 0, &this->window, &this->renderer);
 }
 
@@ -23,6 +28,10 @@ Graphics::~Graphics()
 {
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
+    if (--__num_graphics == 0)
+    {
+        SDL_Quit();
+    }
 }
 
 void Graphics::set_color(Color color)
