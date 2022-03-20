@@ -1,4 +1,5 @@
 #include "rendering/graphics.hpp"
+#include <iostream>
 
 Color::Color(u_char grey) : Color(grey, grey, grey){}
 Color::Color(u_char r, u_char g, u_char b) : Color(r, g, b, SDL_ALPHA_OPAQUE){}
@@ -13,12 +14,22 @@ Color Color::black() {return Color(0,0,0);}
 Color Color::white() {return Color(255,255,255);}
 
 
+static void print_hardware()
+{
+    const auto drivers = SDL_GetNumVideoDrivers();
+    for (auto i = 0; i < drivers; i++)
+    {
+        std::cout << i << ": " << SDL_GetVideoDriver(i) << std::endl;
+    }
+}
+
 static volatile uint __num_graphics = 0;
 
 Graphics::Graphics(uint w, uint h)
 {
     if (__num_graphics++ == 0)
     {
+        print_hardware();
         SDL_Init(SDL_INIT_VIDEO);
     }
     SDL_CreateWindowAndRenderer(w, h, 0, &this->window, &this->renderer);

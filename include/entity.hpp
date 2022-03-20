@@ -9,7 +9,7 @@ class Entity;
 #include <memory>
 #include "simd.hpp"
 #include "random.hpp"
-#include "scene.hpp"
+#include "engine.hpp"
 
 class Entity
 {
@@ -34,6 +34,7 @@ class Component
             entity.add_component(this);
         }
         virtual void update() = 0;
-    protected:
+
         Entity& entity;
+        
 };

@@ -13,13 +13,18 @@ static void seed()
     struct timeval tv;
     gettimeofday(&tv, NULL);
 
-    // generate time from xoring time bytes
+    // generate seed from processing time bytes
     uint* ptr = (uint*) &tv;
-    uint seed = 0;
-    for (auto i = 0; i < sizeof(timeval) / sizeof(uint); i++)
+    uint seed = 0xabcdef;
+    for (uint i = 0; i < sizeof(timeval) / sizeof(uint); i++)
     {
-        seed ^= *ptr++;
+        uint v = ptr[i];
+        v <<= (v % 2) * i;
+
+        seed = (seed ^ v);
     }
+
+    //puts(std::to_string(seed).c_str());
 
     // seed the rng from cstdlib
     srand(seed);

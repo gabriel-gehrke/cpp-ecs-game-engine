@@ -7,6 +7,11 @@
 class Renderer : public Component
 {
     public:
+        Renderer(Entity& e) : Component(e)
+        {
+            
+        }
+
         void update();
 
         virtual Bounds bounds() const = 0;
