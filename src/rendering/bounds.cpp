@@ -1,6 +1,6 @@
 #include "rendering/bounds.hpp"
 
-Bounds::Bounds() : Bounds(float2(), float2()) {}
+Bounds::Bounds() {}
 Bounds::Bounds(float2 min, float2 max)
 {
     this->min = min;
