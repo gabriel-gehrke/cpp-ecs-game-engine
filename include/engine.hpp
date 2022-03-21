@@ -1,13 +1,10 @@
 #pragma once
 
-class Scene;
-class Engine;
-
 #include "rendering/graphics.hpp"
 #include "entity.hpp"
+#include "collision/physics.hpp"
 #include <vector>
 #include <memory>
-
 
 class Scene
 {
@@ -30,6 +27,7 @@ class Engine
         Engine();
 
         Graphics graphics;
+        Physics physics;
         Scene scene;
 
         void loop();

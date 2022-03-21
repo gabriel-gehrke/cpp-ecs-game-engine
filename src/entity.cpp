@@ -1,5 +1,6 @@
 #include "entity.hpp"
 #include "random.hpp"
+#include "engine.hpp"
 
 Entity::Entity(Scene& scene) : scene(scene)
 {

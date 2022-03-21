@@ -1,5 +1,7 @@
 #pragma once
 
+class Collider;
+
 #include "rendering/renderer.hpp"
 #include "collision/segment.hpp"
 

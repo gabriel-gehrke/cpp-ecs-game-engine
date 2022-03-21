@@ -41,3 +41,8 @@ uint64_t rand64()
     }
     return r;
 }
+
+uuid randid()
+{
+    return uuid();
+}

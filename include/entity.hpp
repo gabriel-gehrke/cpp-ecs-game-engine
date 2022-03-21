@@ -1,15 +1,14 @@
 #pragma once
-#include <cstdint>
-#pragma once
-
-class Component;
-class Entity;
 
 #include <vector>
 #include <memory>
+#include <cstdint>
 #include "simd.hpp"
 #include "random.hpp"
-#include "engine.hpp"
+
+class Engine;
+class Scene;
+class Component;
 
 class Entity
 {
@@ -17,24 +16,11 @@ class Entity
 
         Entity(Scene& scene);
     
-        uint64_t id = rand64();
+        uuid id = randid();
         float2 position = float2::zero();
         Scene& scene;
         std::vector<std::shared_ptr<Component>> components;
 
         void add_component(Component* component);
 
-};
-
-class Component
-{
-    public:
-        Component(Entity& entity) : entity(entity)
-        {
-            entity.add_component(this);
-        }
-        virtual void update() = 0;
-
-        Entity& entity;
-        
 };

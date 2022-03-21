@@ -1,6 +1,8 @@
 #pragma once
 
-#include "entity.hpp"
+class Renderer;
+
+#include "component.hpp"
 #include "rendering/graphics.hpp"
 #include "rendering/bounds.hpp"
 

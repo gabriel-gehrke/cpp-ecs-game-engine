@@ -1,4 +1,5 @@
 #include "collision/collider.hpp"
+#include "engine.hpp"
 #include "rendering/graphics.hpp"
 
 void Collider::add_vertex(const float2& v)

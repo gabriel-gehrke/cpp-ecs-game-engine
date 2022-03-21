@@ -1,4 +1,5 @@
 #include "rendering/boxrenderer.hpp"
+#include "engine.hpp"
 
 Bounds BoxRenderer::bounds() const
 {
