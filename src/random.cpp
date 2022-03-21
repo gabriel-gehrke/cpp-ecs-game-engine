@@ -1,7 +1,6 @@
 #include "random.hpp"
 #include <cstdlib>
 #include <sys/time.h>
-#include <iostream>
 
 static bool was_seeded = false;
 
@@ -15,16 +14,15 @@ static void seed()
 
     // generate seed from processing time bytes
     uint* ptr = (uint*) &tv;
-    uint seed = 0xabcdef;
+    uint seed = 0xabcdef5;
+
     for (uint i = 0; i < sizeof(timeval) / sizeof(uint); i++)
     {
         uint v = ptr[i];
-        v <<= (v % 2) * i;
+        v += seed * (v % 2);
 
-        seed = (seed ^ v);
+        seed ^= v;
     }
-
-    //puts(std::to_string(seed).c_str());
 
     // seed the rng from cstdlib
     srand(seed);
