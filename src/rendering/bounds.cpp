@@ -1,20 +1,8 @@
 #include "rendering/bounds.hpp"
 
-Bounds::Bounds() {}
-Bounds::Bounds(float2 min, float2 max)
+static bool between(float lb, float val, float ub)
 {
-    this->min = min;
-    this->max = max;
-}
-
-float Bounds::width() const
-{
-    return this->max.x - this->min.x;
-}
-
-float Bounds::height() const
-{
-    return this->max.y - this->min.y;
+    return lb <= val && val <= ub;
 }
 
 bool Bounds::intersects(const Bounds& o) const
@@ -42,4 +30,16 @@ Bounds Bounds::from_pos_and_size(const float2& pos, const float2& size)
 {
     const float2 hsize = size * 0.5f;
     return Bounds(pos - hsize, pos + hsize);
+}
+
+bool Bounds::contains(const float2& p) const
+{
+    const auto& min = this->min;
+    const auto& max = this->max;
+    return between(min.x, p.x, max.x) && between(min.y, p.y, max.y);
+}
+
+bool Bounds::contains(const Bounds& bounds) const
+{
+    return this->contains(bounds.min) && this->contains(bounds.max);
 }

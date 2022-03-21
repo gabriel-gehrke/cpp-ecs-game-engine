@@ -1,18 +1,27 @@
 #include "engine.hpp"
 #include "rendering/boxrenderer.hpp"
+#include "collision/collider.hpp"
 
 int main()
 {
     auto engine = Engine();
 
-    for (auto i = 0; i < 100; i++)
-    {
-        // this leaks memeory but I dont care
-        Entity* e = new Entity(engine.scene);
-        BoxRenderer* r = new BoxRenderer(*e);
-        r->size = float2::one() * (rand64() % 500);
-        r->entity.position = float2::zero();
-    }
+    // triangle
+    Entity* e = new Entity(engine.scene);
+    Collider* col = new Collider(*e);
+    col->add_vertex(float2(-50, -50));
+    col->add_vertex(float2(100, 50));
+    col->add_vertex(float2(-50, 50));
+    e->position = float2(150, 150);
+
+    // square
+    e = new Entity(engine.scene);
+    col = new Collider(*e);
+    col->add_vertex(float2(-50, -50));
+    col->add_vertex(float2(50, -50));
+    col->add_vertex(float2(50, 50));
+    col->add_vertex(float2(-50, 50));
+    e->position = float2(350, 150);
 
     engine.loop();
 

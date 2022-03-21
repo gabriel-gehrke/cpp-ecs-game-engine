@@ -1,18 +1,6 @@
 #include "rendering/graphics.hpp"
 #include <iostream>
 
-Color::Color(u_char grey) : Color(grey, grey, grey){}
-Color::Color(u_char r, u_char g, u_char b) : Color(r, g, b, SDL_ALPHA_OPAQUE){}
-Color::Color(u_char r, u_char g, u_char b, u_char a)
-{
-    this->r = r;
-    this->g = g;
-    this->b = b;
-    this->a = a;
-}
-Color Color::black() {return Color(0,0,0);}
-Color Color::white() {return Color(255,255,255);}
-
 
 static void print_hardware()
 {
@@ -45,7 +33,7 @@ Graphics::~Graphics()
     }
 }
 
-void Graphics::set_color(Color color)
+void Graphics::set_color(const Color& color)
 {
     SDL_SetRenderDrawColor(this->renderer, color.r, color.g, color.b, color.a);
 }
@@ -61,7 +49,7 @@ void Graphics::refresh()
     SDL_RenderPresent(this->renderer);
 }
 
-void Graphics::draw_rectangle(int x, int y, int w, int h, Color color)
+void Graphics::draw_rectangle(int x, int y, int w, int h, const Color& color)
 {
     this->set_color(color);
     SDL_Rect rect = {
@@ -71,4 +59,54 @@ void Graphics::draw_rectangle(int x, int y, int w, int h, Color color)
         .h = h
     };
     SDL_RenderDrawRect(this->renderer, &rect);
+}
+
+void Graphics::draw_circle(int x, int y, int r, const Color& color)
+{
+    this->set_color(color);
+
+    // https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
+    
+    const int32_t diameter = (r * 2);
+
+    int _x = (r - 1);
+    int _y = 0;
+    int tx = 1;
+    int ty = 1;
+    int error = (tx - diameter);
+
+    const auto& renderer = this->renderer;
+
+    while (_x >= _y)
+    {
+        //  Each of the following renders an octant of the circle
+        SDL_RenderDrawPoint(renderer, x + _x, y - _y);
+        SDL_RenderDrawPoint(renderer, x + _x, y + _y);
+        SDL_RenderDrawPoint(renderer, x - _x, y - _y);
+        SDL_RenderDrawPoint(renderer, x - _x, y + _y);
+        SDL_RenderDrawPoint(renderer, x + _y, y - _x);
+        SDL_RenderDrawPoint(renderer, x + _y, y + _x);
+        SDL_RenderDrawPoint(renderer, x - _y, y - _x);
+        SDL_RenderDrawPoint(renderer, x - _y, y + _x);
+
+        if (error <= 0)
+        {
+            ++_y;
+            error += ty;
+            ty += 2;
+        }
+
+        if (error > 0)
+        {
+            --_x;
+            tx += 2;
+            error += (tx - diameter);
+        }
+    }
+}
+
+void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color& color)
+{
+    this->set_color(color);
+    SDL_RenderDrawLine(this->renderer, x1, y1, x2, y2);
 }
