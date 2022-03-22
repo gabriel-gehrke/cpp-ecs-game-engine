@@ -1,4 +1,5 @@
 #include "collision/segment.hpp"
+#include <iostream>
 
 static const float EPSILON = 1E-6;
 
@@ -35,13 +36,20 @@ bool Segment::intersects(const Segment& seg, float2& intersection) const
     float2 p(x, y);
 
     // check whether (x, y) is on this segment (and therefore on both lines)
-    float2 d1 = this->ab();
-    float2 d2 = p - this->a;
+    float2 d1 = seg.ab();
+    float2 d2 = (p - seg.a);
+
+    if (d2.length() / d1.length() > 1)
+        return false;
+    
+    d1.normalize();
+    d2.normalize();
 
     // 1.: check if both vectors face same direction
-    if (d1.dot(d2) > 1.0f - EPSILON && d1.squared_length() >= d2.squared_length())
+    if (d1.dot(d2) > 1.0f - EPSILON)
     {
         intersection = p;
+        std::cout << p.to_string() << std::endl;
         return true;
     }
 
