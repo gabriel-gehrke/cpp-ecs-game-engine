@@ -77,7 +77,8 @@ bool Collider::collides_with(const Collider& c, float2& point) const
     return true;
 }
 
-void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& point)
+void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& p)
 {
+    this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(255,255,0));
     this->color = Color(255, 0, 0);
 }

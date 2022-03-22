@@ -1,21 +1,36 @@
 #include "collision/segment.hpp"
 #include <iostream>
 
-static const float EPSILON = 1E-6;
+static const float EPSILON = 1E-4;
+
+static bool is_point_within_segment(const Segment& seg, const float2& point)
+{
+    float2 ab = seg.ab();
+    float2 ap = point - seg.a;
+
+    if (ap.squared_length() > ab.squared_length())
+        return false;
+    
+    ab.normalize();
+    ap.normalize();
+
+    if (ab.dot(ap) < 1.0f - EPSILON)
+        return false;
+    
+    return true;
+}
 
 bool Segment::intersects(const Segment& seg, float2& intersection) const
 {
     // inspiration: https://iq.opengenus.org/2d-line-intersection/
 
+    // 1. check if unbounded versions of the lines are intersecting
     const float& x1 = this->a.x;
     const float& y1 = this->a.y;
-
     const float& x2 = this->b.x;
     const float& y2 = this->b.y;
-
     const float& x3 = seg.a.x;
     const float& y3 = seg.a.y;
-
     const float& x4 = seg.b.x;
     const float& y4 = seg.b.y;
 
@@ -25,7 +40,7 @@ bool Segment::intersects(const Segment& seg, float2& intersection) const
     const float y34 = y3 - y4;
     const float c = x12 * y34 - y12 * x34;
 
-    // check if lines are parallel
+    // 1.1: check if lines are (essentially) parallel
     if (std::abs(c) < EPSILON)
         return false;
     
@@ -33,25 +48,8 @@ bool Segment::intersects(const Segment& seg, float2& intersection) const
     float b = x3 * y4 - y3 * x4;
     float x = (a * x34 - b * x12) / c;
     float y = (a * y34 - b * y12) / c;
-    float2 p(x, y);
+    intersection = float2(x, y);
 
-    // check whether (x, y) is on this segment (and therefore on both lines)
-    float2 d1 = seg.ab();
-    float2 d2 = (p - seg.a);
-
-    if (d2.length() / d1.length() > 1)
-        return false;
-    
-    d1.normalize();
-    d2.normalize();
-
-    // 1.: check if both vectors face same direction
-    if (d1.dot(d2) > 1.0f - EPSILON)
-    {
-        intersection = p;
-        std::cout << p.to_string() << std::endl;
-        return true;
-    }
-
-    return false;
+    // 2. check if point lies on both segments
+    return is_point_within_segment(*this, intersection) && is_point_within_segment(seg, intersection);
 }
