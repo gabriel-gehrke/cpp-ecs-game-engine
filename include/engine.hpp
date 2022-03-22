@@ -16,8 +16,8 @@ class Scene
 
         Engine& engine;
 
-        std::vector<std::shared_ptr<Entity>> entities;
-        void add_entity(Entity* entity);
+        std::vector<std::unique_ptr<Entity>> entities;
+        Entity& new_entity();
 };
 
 class Engine

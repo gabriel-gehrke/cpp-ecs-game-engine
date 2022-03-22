@@ -9,10 +9,7 @@ class Component;
 class Component
 {
     public:
-        Component(Entity& entity) : entity(entity)
-        {
-            entity.add_component(this);
-        }
+        Component(Entity& entity) : entity(entity) {}
 
 
         virtual void update() = 0;
