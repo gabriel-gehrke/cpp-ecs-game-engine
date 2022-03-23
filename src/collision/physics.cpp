@@ -16,14 +16,14 @@ void Physics::step() const
 
             if (col1->collides_with(*col2, p))
             {
-                for (const auto& c : col1->entity.components)
+                for (const auto& [_, component] : col1->entity)
                 {
-                    c->on_collision_enter(*col1, *col2, p);
+                    component->on_collision_enter(*col1, *col2, p);
                 }
 
-                for (const auto& c : col2->entity.components)
+                for (const auto& [_, component] : col2->entity)
                 {
-                    c->on_collision_enter(*col2, *col1, p);
+                    component->on_collision_enter(*col2, *col1, p);
                 }
             }
 

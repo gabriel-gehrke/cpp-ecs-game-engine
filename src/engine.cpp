@@ -1,4 +1,5 @@
 #include "engine.hpp"
+#include "components/rigidbody.hpp"
 
 Entity& Scene::new_entity()
 {
@@ -22,6 +23,7 @@ void Engine::loop()
     {
         Entity& e = this->scene.new_entity();
         Collider& col = e.add_component<Collider>();
+        e.add_component<Rigidbody>();
         col.add_vertex(float2(-50, -50));
         col.add_vertex(float2(100, 50));
         col.add_vertex(float2(-50, 50));
@@ -36,6 +38,7 @@ void Engine::loop()
     col.add_vertex(float2(50, -50));
     col.add_vertex(float2(50, 50));
     col.add_vertex(float2(-50, 50));
+    e.add_component<Rigidbody>();
     e.position = float2(350, 150);
 
     SDL_Event event;
@@ -51,20 +54,20 @@ void Engine::loop()
 
         if (event.type == SDL_KEYDOWN)
         {
+            Rigidbody& rb = e.get_component<Rigidbody>();
             auto code = event.key.keysym.scancode;
 
-            e.position.y -= speed * (code == SDL_SCANCODE_W);
-            e.position.y += speed * (code == SDL_SCANCODE_S);
-
-            e.position.x -= speed * (code == SDL_SCANCODE_A);
-            e.position.x += speed * (code == SDL_SCANCODE_D);
+            rb.velocity.y = -speed * (code == SDL_SCANCODE_W) + speed * (code == SDL_SCANCODE_S);
+            rb.velocity.x = -speed * (code == SDL_SCANCODE_A) + speed * (code == SDL_SCANCODE_D);
         }
 
-        for (auto& e : this->scene.entities)
+        for (auto& e_ptr : this->scene.entities)
         {
-            for (auto& c : e->components)
+            Entity& e = *e_ptr;
+
+            for (auto& [id, component] : e)
             {
-                c->update();
+                component->update();
             }
         }
 
