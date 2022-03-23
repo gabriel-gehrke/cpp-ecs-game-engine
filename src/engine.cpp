@@ -19,27 +19,64 @@ void Engine::load(Scene& scene)
 
 void Engine::loop()
 {
+    /*
     // triangle
     {
         Entity& e = this->scene.new_entity();
         Collider& col = e.add_component<Collider>();
-        e.add_component<Rigidbody>();
+        //e.add_component<Rigidbody>();
         col.add_vertex(float2(-50, -50));
         col.add_vertex(float2(100, 50));
         col.add_vertex(float2(-50, 50));
         e.position = float2(150, 150);
     }
-    
+    */
+
+    // ground
+    {
+        Entity& e = this->scene.new_entity();
+        Collider& col = e.add_component<Collider>();
+        col.add_vertex(float2(0, 0));
+        const uint num_points = 10;
+        for (auto i = 0; i < num_points; i++)
+        {
+            float x = (1280 / (num_points + 2.0f)) * (i+1);
+            float y = rand64() % 200 + 500;
+            col.add_vertex(float2(x, y)); 
+        }
+        col.add_vertex(float2(1280, 0));
+        col.add_vertex(float2(1280, 720));
+        col.add_vertex(float2(0, 720));
+    }
 
     // square
+    {
+        Entity& e = this->scene.new_entity();
+        Collider& col = e.add_component<Collider>();
+        col.add_vertex(float2(-50, -50));
+        col.add_vertex(float2(50, -50));
+        col.add_vertex(float2(50, 50));
+        col.add_vertex(float2(-50, 50));
+        e.add_component<Rigidbody>();
+        e.get_component<Rigidbody>().bounciness = 0.95f;
+        e.position = float2(350, 150);
+    }
+
+    // circle?
     Entity& e = this->scene.new_entity();
     Collider& col = e.add_component<Collider>();
-    col.add_vertex(float2(-50, -50));
-    col.add_vertex(float2(50, -50));
-    col.add_vertex(float2(50, 50));
-    col.add_vertex(float2(-50, 50));
+    const uint num_sides = 10;
+    const float radius = 40;
+    for (auto i = 0; i < num_sides; i++)
+    {
+        float angle = ((M_PI * 2) / num_sides) * i;
+        float x = std::sin(angle) * radius;
+        float y = std::cos(angle) * radius;
+        col.add_vertex(float2(x, y));
+    }
     e.add_component<Rigidbody>();
-    e.position = float2(350, 150);
+    e.get_component<Rigidbody>().bounciness = 0.95f;
+    e.position = float2(800, 150);
 
     SDL_Event event;
 
@@ -50,7 +87,7 @@ void Engine::loop()
 
         physics.step();
 
-        const float speed = 2;
+        const float speed = 3;
 
         if (event.type == SDL_KEYDOWN)
         {

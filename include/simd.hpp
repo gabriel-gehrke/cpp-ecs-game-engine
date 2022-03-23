@@ -25,6 +25,9 @@ struct float2
         float dot(const float2& o) const {return this->x * o.x + this->y * o.y;}
         // calculates the "unofficial" 2D-cross-product vx * wy − vy * wx.
         float cross(const float2& o) const {return this->x * o.y - this->y * o.x;}
+        // returns a vector, which is orthogonal to this vector (rotated by 90 degrees)
+        float2 orthogonal() const {return float2(-this->y, this->x);}
+        float2 reflect(const float2& n) const {return *this - n*(2*n.dot(*this));}
         // returns a string representation of the vector
         std::string to_string() const;
 

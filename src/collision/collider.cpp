@@ -46,17 +46,18 @@ void Collider::draw()
     this->color = Color(0, 255, 0);
 }
 
-bool Collider::collides_with(const Collider& c, float2& point) const
+bool Collider::collides_with(const Collider& c, float2& point, float2& normal) const
 {
     point.x = 0;
     point.y = 0;
     uint collisions = 0;
+    float2 points[2];
 
     const auto l = num_segments();
-    for (auto i = 0; i < l; i++)
+    for (auto i = 0; i < l && collisions < 2; i++)
     {
         const auto k = c.num_segments();
-        for (auto j = 0; j < k; j++)
+        for (auto j = 0; j < k && collisions < 2; j++)
         {
             const auto s1 = this->segment(i);
             const auto s2 = c.segment(j);
@@ -65,20 +66,29 @@ bool Collider::collides_with(const Collider& c, float2& point) const
             if (s1.intersects(s2, p))
             {
                 this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(0,0,255));
-                point += p;
-                collisions++;
+                points[collisions++] = p;
             }
         }
     }
 
-    if (collisions == 0) return false;
+    if (collisions < 2) return false;
 
-    point /= (float) collisions;
+    point = (points[0] + points[1]) / 2.0f;
+    normal = (points[0] - points[1]).orthogonal().normalized();
+
     return true;
 }
 
-void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& p)
+void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& p, const float2& normal)
 {
+    // draw the collision point
     this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(255,255,0));
+    // calculate and visualize the collision normal
+    const float len = 25.0f;
+    float2 l = normal * len;
+    float2 lp1 = p + l;
+    float2 lp2 = p - l;
+    this->entity.scene.engine.graphics.draw_line((int)lp1.x, (int)lp1.y, (int)lp2.x, (int)lp2.y, Color(255, 0, 255));
+
     this->color = Color(255, 0, 0);
 }
