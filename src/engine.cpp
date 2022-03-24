@@ -51,6 +51,7 @@ void Engine::loop()
 
     
 
+    /*
     // square
     {
         Entity& e = this->scene.new_entity();
@@ -61,14 +62,14 @@ void Engine::loop()
         col.add_vertex(float2(-50, 50));
         e.add_component<Rigidbody>();
         e.get_component<Rigidbody>().bounciness = 0.99f;
-        e.position = float2(350, 400);
+        e.position = float2(1280 / 2, 100);
     }
+    */
     
-
     // circles
-    const uint NUM_BALLS = 5;
-    const float BALL_RADIUS = 30;
-    const float BALL_VERTS = 10;
+    const uint NUM_BALLS = 1;
+    const float BALL_RADIUS = 50;
+    const float BALL_VERTS = 20;
 
     for (auto i = 0; i < NUM_BALLS; i++)
     {
@@ -77,7 +78,7 @@ void Engine::loop()
 
         Entity& e = this->scene.new_entity();
         e.add_component<Rigidbody>();
-        e.get_component<Rigidbody>().bounciness = 0.99f;
+        e.get_component<Rigidbody>().bounciness = 0.95f;
         e.position = float2(posX, posY);
 
         Collider& col = e.add_component<Collider>();

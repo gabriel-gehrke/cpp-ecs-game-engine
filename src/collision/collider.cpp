@@ -13,13 +13,19 @@ void Collider::add_vertex(const float2& v)
     this->verts.push_back(v);
 }
 
+float2 Collider::translate_point(float2 vert) const
+{
+    const auto& center = this->entity.position;
+    const auto& rotation = this->entity.rotation;
+    return (vert + center).rotate_around(center, rotation);
+}
+
 Segment Collider::segment(uint index) const
 {
     const auto size = num_segments();
-    const auto& p1 = this->verts[index % size];
-    const auto& p2 = this->verts[(index + 1) % size];
-    const auto& center = this->entity.position;
-    return Segment(p1 + center, p2 + center);
+    const auto p1 = translate_point(this->verts[index % size]);
+    const auto p2 = translate_point(this->verts[(index + 1) % size]);
+    return Segment(p1, p2);
 }
 
 Bounds Collider::bounds() const
@@ -27,19 +33,23 @@ Bounds Collider::bounds() const
     return Bounds();
 }
 
+
 void Collider::draw()
 {
     const auto size = this->verts.size();
 
-    const auto& center = this->entity.position; 
-    this->entity.scene.engine.graphics.draw_circle((int)center.x, (int) center.y, 5, this->color);
+    // only for drawing middle point, center is not needed
+    {
+        const auto& center = translate_point(float2(0, 0)); 
+        this->entity.scene.engine.graphics.draw_circle((int)center.x, (int) center.y, 5, this->color);
+    }
 
     for (auto i = 0; i < size; i++)
     {
-        const auto& v1 = this->verts[i] + center;
-        const auto& v2 = this->verts[(i + 1) % size] + center;
+        const auto v1 = translate_point(this->verts[i]);
+        const auto v2 = translate_point(this->verts[(i + 1) % size]);
 
-        this->entity.scene.engine.graphics.draw_circle((int)v1.x, (int) v1.y, 5, this->color);
+        //this->entity.scene.engine.graphics.draw_circle((int)v1.x, (int) v1.y, 5, this->color);
         this->entity.scene.engine.graphics.draw_line((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, this->color);
     }
 
@@ -51,13 +61,14 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
     point.x = 0;
     point.y = 0;
     uint collisions = 0;
-    float2 points[2];
+    float2 points[this->num_segments() * c.num_segments()];
+    float2 avg = float2::zero();
 
     const auto l = num_segments();
-    for (auto i = 0; i < l && collisions < 2; i++)
+    for (auto i = 0; i < l; i++)
     {
         const auto k = c.num_segments();
-        for (auto j = 0; j < k && collisions < 2; j++)
+        for (auto j = 0; j < k; j++)
         {
             const auto s1 = this->segment(i);
             const auto s2 = c.segment(j);
@@ -67,14 +78,36 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
             {
                 this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(0,0,255));
                 points[collisions++] = p;
+                avg += p;
             }
         }
     }
 
     if (collisions < 2) return false;
+    avg /= (float)collisions;
 
-    point = (points[0] + points[1]) / 2.0f;
-    normal = (points[0] - points[1]).orthogonal().normalized();
+    // linear regression over all collision points
+    float d = 0;
+    float e = 0;
+    for (auto i = 0; i < collisions; i++)
+    {
+        float f = points[i].x - avg.x; 
+
+        d += f * (points[i].y - avg.y);
+        e += f * f;
+    }
+
+    if (std::abs(e) < 1E-5)
+    {
+        // infinite slope -> vertical collision line -> hoizontal normal
+        normal = float2(1, 0);
+    }
+    else
+    {
+        // normal = orthogonal to slope vector
+        normal = float2(1, d / e).orthogonal().normalized();
+    }
+    point = avg;
 
     return true;
 }

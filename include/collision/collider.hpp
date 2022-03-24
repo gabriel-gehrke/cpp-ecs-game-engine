@@ -26,4 +26,6 @@ class Collider : public Renderer
     
     private:
         Color color = Color(0, 255, 0);
+
+        float2 translate_point(float2 vert) const;
 };

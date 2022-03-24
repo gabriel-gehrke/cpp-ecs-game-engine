@@ -10,6 +10,7 @@ class Rigidbody : public Component
 
         float2 velocity;
         float drag = 1;
+        float mass = 1;
         float bounciness = 0.8f;
         bool simulated = true;
 
