@@ -49,6 +49,11 @@ void Graphics::refresh()
     SDL_RenderPresent(this->renderer);
 }
 
+void Graphics::set_window_title(const char* s)
+{
+    SDL_SetWindowTitle(this->window, s);
+}
+
 void Graphics::draw_rectangle(int x, int y, int w, int h, const Color& color)
 {
     this->set_color(color);

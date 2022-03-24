@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include "components/rigidbody.hpp"
+#include <chrono>
 
 Entity& Scene::new_entity()
 {
@@ -51,7 +52,7 @@ void Engine::loop()
 
     
 
-    /*
+    
     // square
     {
         Entity& e = this->scene.new_entity();
@@ -61,13 +62,13 @@ void Engine::loop()
         col.add_vertex(float2(50, 50));
         col.add_vertex(float2(-50, 50));
         e.add_component<Rigidbody>();
-        e.get_component<Rigidbody>().bounciness = 0.99f;
-        e.position = float2(1280 / 2, 100);
+        e.get_component<Rigidbody>().bounciness = 0.8f;
+        e.position = float2(1280 / 2, -100);
     }
-    */
+    
     
     // circles
-    const uint NUM_BALLS = 1;
+    const uint NUM_BALLS = 3;
     const float BALL_RADIUS = 50;
     const float BALL_VERTS = 20;
 
@@ -94,15 +95,21 @@ void Engine::loop()
     
 
     SDL_Event event;
+    const float target_delay = 1.0f / this->target_fps;
+    
 
     while(!(event.type == SDL_QUIT)){
+        // pre-frame delay
+        if (this->dt < target_delay)
+        {
+            SDL_Delay((int)(target_delay - this->dt));
+        }
+        this->dt = std::max(target_delay, this->dt);
+        auto t_begin = std::chrono::steady_clock::now();
 
-        SDL_Delay(10);  // setting some Delay
+        this->framecounter++;
         this->graphics.clear();
-
         physics.step();
-
-        const float speed = 3;
 
         /*
         if (event.type == SDL_KEYDOWN)
@@ -128,5 +135,12 @@ void Engine::loop()
         this->graphics.refresh();
 
         SDL_PollEvent(&event);  // Catching the poll event.
+
+        auto t_end = std::chrono::steady_clock::now();
+        auto t_diff = t_end - t_begin;
+
+        this->dt = std::chrono::duration_cast<std::chrono::milliseconds>(t_diff).count() / 1000.0f;
+        int fps = (int) std::round(1.0f / this->dt);
+        this->graphics.set_window_title((std::to_string(fps) + " fps").c_str());
     }
 }

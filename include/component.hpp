@@ -21,5 +21,7 @@ class Component
         }
 
         Entity& entity;
+    protected:
+        float dt() const;
         
 };

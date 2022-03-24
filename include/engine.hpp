@@ -30,6 +30,10 @@ class Engine
         Physics physics;
         Scene scene;
 
+        uint32_t target_fps = 60;
+        uint64_t framecounter = 1;
+        float dt = 1 / target_fps;
+
         void loop();
         void load(Scene& scene);
 };
