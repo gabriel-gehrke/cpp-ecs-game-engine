@@ -49,6 +49,8 @@ void Engine::loop()
         col.add_vertex(float2(0, 720));
     }
 
+    
+
     // square
     {
         Entity& e = this->scene.new_entity();
@@ -58,25 +60,37 @@ void Engine::loop()
         col.add_vertex(float2(50, 50));
         col.add_vertex(float2(-50, 50));
         e.add_component<Rigidbody>();
-        e.get_component<Rigidbody>().bounciness = 0.95f;
-        e.position = float2(350, 150);
+        e.get_component<Rigidbody>().bounciness = 0.99f;
+        e.position = float2(350, 400);
     }
+    
 
-    // circle?
-    Entity& e = this->scene.new_entity();
-    Collider& col = e.add_component<Collider>();
-    const uint num_sides = 10;
-    const float radius = 40;
-    for (auto i = 0; i < num_sides; i++)
+    // circles
+    const uint NUM_BALLS = 5;
+    const float BALL_RADIUS = 30;
+    const float BALL_VERTS = 10;
+
+    for (auto i = 0; i < NUM_BALLS; i++)
     {
-        float angle = ((M_PI * 2) / num_sides) * i;
-        float x = std::sin(angle) * radius;
-        float y = std::cos(angle) * radius;
-        col.add_vertex(float2(x, y));
+        float posX = (1280 / (NUM_BALLS + 2)) * (i + 1);
+        float posY = randrange(100, 300);
+
+        Entity& e = this->scene.new_entity();
+        e.add_component<Rigidbody>();
+        e.get_component<Rigidbody>().bounciness = 0.99f;
+        e.position = float2(posX, posY);
+
+        Collider& col = e.add_component<Collider>();
+
+        for (auto i = 0; i < BALL_VERTS; i++)
+        {
+            float angle = ((M_PI * 2) / BALL_VERTS) * i;
+            float x = std::sin(angle) * BALL_RADIUS;
+            float y = std::cos(angle) * BALL_RADIUS;
+            col.add_vertex(float2(x, y));
+        }
     }
-    e.add_component<Rigidbody>();
-    e.get_component<Rigidbody>().bounciness = 0.95f;
-    e.position = float2(800, 150);
+    
 
     SDL_Event event;
 
@@ -89,6 +103,7 @@ void Engine::loop()
 
         const float speed = 3;
 
+        /*
         if (event.type == SDL_KEYDOWN)
         {
             Rigidbody& rb = e.get_component<Rigidbody>();
@@ -97,6 +112,7 @@ void Engine::loop()
             rb.velocity.y = -speed * (code == SDL_SCANCODE_W) + speed * (code == SDL_SCANCODE_S);
             rb.velocity.x = -speed * (code == SDL_SCANCODE_A) + speed * (code == SDL_SCANCODE_D);
         }
+        */
 
         for (auto& e_ptr : this->scene.entities)
         {

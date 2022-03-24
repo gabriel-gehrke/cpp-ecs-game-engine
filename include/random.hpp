@@ -4,6 +4,8 @@
 #include <array>
 
 uint64_t rand64();
+uint32_t rand32();
+uint32_t randrange(const uint32_t lb, const uint32_t ub);
 
 struct uuid
 {

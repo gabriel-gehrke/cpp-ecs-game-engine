@@ -29,6 +29,12 @@ static void seed()
     was_seeded = true;
 }
 
+uint32_t rand32()
+{
+    seed();
+    return (rand() << 16) | (rand() & 0xFFFF);
+}
+
 uint64_t rand64()
 {
     seed();
@@ -40,6 +46,11 @@ uint64_t rand64()
         *ptr++ = (uint16_t)(rand() & 0xFFFF);
     }
     return r;
+}
+
+uint32_t randrange(const uint32_t lb, const uint32_t ub)
+{
+    return lb + (rand32() % (ub - lb));
 }
 
 uuid randid()
