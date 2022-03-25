@@ -20,7 +20,8 @@ Graphics::Graphics(uint w, uint h)
         print_hardware();
         SDL_Init(SDL_INIT_VIDEO);
     }
-    SDL_CreateWindowAndRenderer(w, h, 0, &this->window, &this->renderer);
+    this->window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
+    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_PRESENTVSYNC);
 }
 
 Graphics::~Graphics()

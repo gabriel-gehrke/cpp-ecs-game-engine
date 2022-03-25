@@ -52,7 +52,7 @@ void Engine::loop()
 
     
 
-    
+    /*
     // square
     {
         Entity& e = this->scene.new_entity();
@@ -65,17 +65,18 @@ void Engine::loop()
         e.get_component<Rigidbody>().bounciness = 0.8f;
         e.position = float2(1280 / 2, -100);
     }
+    */
     
     
     // circles
-    const uint NUM_BALLS = 3;
-    const float BALL_RADIUS = 50;
-    const float BALL_VERTS = 20;
+    const uint NUM_BALLS = 20;
+    const float BALL_RADIUS = 15;
+    const float BALL_VERTS = 5;
 
     for (auto i = 0; i < NUM_BALLS; i++)
     {
         float posX = (1280 / (NUM_BALLS + 2)) * (i + 1);
-        float posY = randrange(100, 300);
+        float posY = randrange(100, 500);
 
         Entity& e = this->scene.new_entity();
         e.add_component<Rigidbody>();
@@ -95,32 +96,14 @@ void Engine::loop()
     
 
     SDL_Event event;
-    const float target_delay = 1.0f / this->target_fps;
     
-
     while(!(event.type == SDL_QUIT)){
-        // pre-frame delay
-        if (this->dt < target_delay)
-        {
-            SDL_Delay((int)(target_delay - this->dt));
-        }
-        this->dt = std::max(target_delay, this->dt);
+        // begin recording the frame time
         auto t_begin = std::chrono::steady_clock::now();
 
         this->framecounter++;
         this->graphics.clear();
         physics.step();
-
-        /*
-        if (event.type == SDL_KEYDOWN)
-        {
-            Rigidbody& rb = e.get_component<Rigidbody>();
-            auto code = event.key.keysym.scancode;
-
-            rb.velocity.y = -speed * (code == SDL_SCANCODE_W) + speed * (code == SDL_SCANCODE_S);
-            rb.velocity.x = -speed * (code == SDL_SCANCODE_A) + speed * (code == SDL_SCANCODE_D);
-        }
-        */
 
         for (auto& e_ptr : this->scene.entities)
         {
@@ -134,13 +117,18 @@ void Engine::loop()
 
         this->graphics.refresh();
 
-        SDL_PollEvent(&event);  // Catching the poll event.
-
+        // stop time
         auto t_end = std::chrono::steady_clock::now();
         auto t_diff = t_end - t_begin;
+        const auto micros = std::max((int)std::chrono::duration_cast<std::chrono::microseconds>(t_diff).count(), 1);
+        const auto millis = micros / 1000;
 
-        this->dt = std::chrono::duration_cast<std::chrono::milliseconds>(t_diff).count() / 1000.0f;
+        // calculate delta time
+        this->dt = (float) micros / 1E6f;
         int fps = (int) std::round(1.0f / this->dt);
-        this->graphics.set_window_title((std::to_string(fps) + " fps").c_str());
+        this->graphics.set_window_title((std::to_string(fps) + " fps - " + std::to_string(millis) + " ms").c_str());
+
+        // poll event
+        SDL_PollEvent(&event);
     }
 }
