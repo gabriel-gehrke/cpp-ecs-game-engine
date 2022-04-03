@@ -4,6 +4,11 @@
 static SDL_Window* window;
 static SDL_Renderer* renderer;
 
+static void set_color(const Color& color)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+}
+
 static void print_hardware()
 {
     const auto drivers = SDL_GetNumVideoDrivers();
@@ -15,6 +20,7 @@ static void print_hardware()
 
 void Graphics::init(uint w, uint h)
 {
+    print_hardware();
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
@@ -25,11 +31,6 @@ void Graphics::close()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-}
-
-void Graphics::set_color(const Color& color)
-{
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 }
 
 void Graphics::clear()
