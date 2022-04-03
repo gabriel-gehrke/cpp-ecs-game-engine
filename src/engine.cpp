@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include "components/rigidbody.hpp"
+#include "input.hpp"
 #include <chrono>
 
 Entity& Scene::new_entity()
@@ -16,6 +17,25 @@ Engine::Engine() : scene(Scene(*this))
 
 void Engine::load(Scene& scene)
 {
+}
+
+static void handle_events()
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+            case SDL_QUIT:
+                Graphics::clear();
+                exit(1);
+                break;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                Input::handle_event(&event);
+
+        }
+    }
 }
 
 void Engine::loop()
@@ -94,10 +114,8 @@ void Engine::loop()
         }
     }
     
-
-    SDL_Event event;
     
-    while(!(event.type == SDL_QUIT)){
+    while (true) {
         // begin recording the frame time
         auto t_begin = std::chrono::steady_clock::now();
 
@@ -129,7 +147,22 @@ void Engine::loop()
         int fps = (int) std::round(1.0f / this->dt);
         Graphics::set_window_title((std::to_string(fps) + " fps - " + std::to_string(millis) + " ms").c_str());
 
-        // poll event
-        SDL_PollEvent(&event);
+        // sdl events
+        handle_events();
+
+        // keyboard test
+        uint keysdown = 0;
+        for (char c = 'a'; c <= 'z'; c++)
+        {
+            if (Input::is_key_down(c))
+            {
+                std::cout << c;
+                keysdown++;
+            }
+        }
+        if (keysdown > 0)
+        {
+            std::cout << std::endl;
+        }
     }
 }
