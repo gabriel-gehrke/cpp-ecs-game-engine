@@ -26,7 +26,6 @@ class Engine
     public:
         Engine();
 
-        Graphics graphics;
         Physics physics;
         Scene scene;
 

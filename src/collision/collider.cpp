@@ -41,7 +41,7 @@ void Collider::draw()
     // only for drawing middle point, center is not needed
     {
         const auto& center = translate_point(float2(0, 0)); 
-        this->entity.scene.engine.graphics.draw_circle((int)center.x, (int) center.y, 5, this->color);
+        Graphics::draw_circle((int)center.x, (int) center.y, 5, this->color);
     }
 
     for (auto i = 0; i < size; i++)
@@ -50,7 +50,7 @@ void Collider::draw()
         const auto v2 = translate_point(this->verts[(i + 1) % size]);
 
         //this->entity.scene.engine.graphics.draw_circle((int)v1.x, (int) v1.y, 5, this->color);
-        this->entity.scene.engine.graphics.draw_line((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, this->color);
+        Graphics::draw_line((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, this->color);
     }
 
     this->color = Color(0, 255, 0);
@@ -76,7 +76,7 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
             float2 p;
             if (s1.intersects(s2, p))
             {
-                this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(0,0,255));
+                Graphics::draw_circle((int)p.x, (int)p.y, 5, Color(0,0,255));
                 points[collisions++] = p;
                 avg += p;
             }
@@ -115,13 +115,13 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
 void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& p, const float2& normal)
 {
     // draw the collision point
-    this->entity.scene.engine.graphics.draw_circle((int)p.x, (int)p.y, 5, Color(255,255,0));
+    Graphics::draw_circle((int)p.x, (int)p.y, 5, Color(255,255,0));
     // calculate and visualize the collision normal
     const float len = 25.0f;
     float2 l = normal * len;
     float2 lp1 = p + l;
     float2 lp2 = p - l;
-    this->entity.scene.engine.graphics.draw_line((int)lp1.x, (int)lp1.y, (int)lp2.x, (int)lp2.y, Color(255, 0, 255));
+    Graphics::draw_line((int)lp1.x, (int)lp1.y, (int)lp2.x, (int)lp2.y, Color(255, 0, 255));
 
     this->color = Color(255, 0, 0);
 }

@@ -12,5 +12,5 @@ void BoxRenderer::draw()
     int y = (int) this->entity.position.y;
     int w = (int) this->size.x;
     int h = (int) this->size.y;
-    this->entity.scene.engine.graphics.draw_rectangle(x, y, w, h, Color::white());
+    Graphics::draw_rectangle(x, y, w, h, Color::white());
 }

@@ -9,9 +9,9 @@ Entity& Scene::new_entity()
     return *e;
 }
 
-Engine::Engine() : graphics(Graphics(1280, 720)), scene(Scene(*this))
+Engine::Engine() : scene(Scene(*this))
 {
-
+    Graphics::init(1280, 720);
 }
 
 void Engine::load(Scene& scene)
@@ -102,7 +102,8 @@ void Engine::loop()
         auto t_begin = std::chrono::steady_clock::now();
 
         this->framecounter++;
-        this->graphics.clear();
+        
+        Graphics::clear();
         physics.step();
 
         for (auto& e_ptr : this->scene.entities)
@@ -115,7 +116,7 @@ void Engine::loop()
             }
         }
 
-        this->graphics.refresh();
+        Graphics::refresh();
 
         // stop time
         auto t_end = std::chrono::steady_clock::now();
@@ -126,7 +127,7 @@ void Engine::loop()
         // calculate delta time
         this->dt = (float) micros / 1E6f;
         int fps = (int) std::round(1.0f / this->dt);
-        this->graphics.set_window_title((std::to_string(fps) + " fps - " + std::to_string(millis) + " ms").c_str());
+        Graphics::set_window_title((std::to_string(fps) + " fps - " + std::to_string(millis) + " ms").c_str());
 
         // poll event
         SDL_PollEvent(&event);

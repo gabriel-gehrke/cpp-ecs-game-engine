@@ -1,6 +1,8 @@
 #include "rendering/graphics.hpp"
 #include <iostream>
 
+static SDL_Window* window;
+static SDL_Renderer* renderer;
 
 static void print_hardware()
 {
@@ -11,65 +13,56 @@ static void print_hardware()
     }
 }
 
-static volatile uint __num_graphics = 0;
-
-Graphics::Graphics(uint w, uint h)
+void Graphics::init(uint w, uint h)
 {
-    if (__num_graphics++ == 0)
-    {
-        print_hardware();
-        SDL_Init(SDL_INIT_VIDEO);
-    }
-    this->window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_PRESENTVSYNC);
+    SDL_Init(SDL_INIT_VIDEO);
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 }
 
-Graphics::~Graphics()
+void Graphics::close()
 {
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
-    if (--__num_graphics == 0)
-    {
-        SDL_Quit();
-    }
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 void Graphics::set_color(const Color& color)
 {
-    SDL_SetRenderDrawColor(this->renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 }
 
 void Graphics::clear()
 {
-    this->set_color(Color::black());
-    SDL_RenderClear(this->renderer);
+    set_color(Color::black());
+    SDL_RenderClear(renderer);
 }
 
 void Graphics::refresh()
 {
-    SDL_RenderPresent(this->renderer);
+    SDL_RenderPresent(renderer);
 }
 
 void Graphics::set_window_title(const char* s)
 {
-    SDL_SetWindowTitle(this->window, s);
+    SDL_SetWindowTitle(window, s);
 }
 
 void Graphics::draw_rectangle(int x, int y, int w, int h, const Color& color)
 {
-    this->set_color(color);
+    set_color(color);
     SDL_Rect rect = {
         .x = x,
         .y = y,
         .w = w,
         .h = h
     };
-    SDL_RenderDrawRect(this->renderer, &rect);
+    SDL_RenderDrawRect(renderer, &rect);
 }
 
 void Graphics::draw_circle(int x, int y, int r, const Color& color)
 {
-    this->set_color(color);
+    set_color(color);
 
     // https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
     
@@ -80,8 +73,6 @@ void Graphics::draw_circle(int x, int y, int r, const Color& color)
     int tx = 1;
     int ty = 1;
     int error = (tx - diameter);
-
-    const auto& renderer = this->renderer;
 
     while (_x >= _y)
     {
@@ -113,6 +104,6 @@ void Graphics::draw_circle(int x, int y, int r, const Color& color)
 
 void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color& color)
 {
-    this->set_color(color);
-    SDL_RenderDrawLine(this->renderer, x1, y1, x2, y2);
+    set_color(color);
+    SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
