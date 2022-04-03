@@ -71,7 +71,7 @@ void Engine::loop()
     // circles
     const uint NUM_BALLS = 20;
     const float BALL_RADIUS = 15;
-    const float BALL_VERTS = 5;
+    const float BALL_VERTS = 16;
 
     for (auto i = 0; i < NUM_BALLS; i++)
     {

@@ -47,16 +47,16 @@ class Entity
         }
 
         // checks if a component of the specified type is attached to the entity
-        template<typename T> inline bool has_component() const
+        template<typename T> bool has_component() const
         {
-            static_assert(std::is_base_of<Component, T>(), "The component class must derive from Component!");
-            return this->component_map.find(std::type_index(typeid(T))) != this->component_map.end();
+            static_assert(std::is_base_of<Component, T>(), "The component class to check must derive from Component!");
+            return this->component_map.end() != this->component_map.find(std::type_index(typeid(T)));
         }
 
-        // creates and attaches a component of the type to this entity. (note: duplicate component types are not allowed.)
-        template<typename T> inline T& add_component()
+        // creates and attaches a component of the type to this entity. (more than one component per type is not allowed.)
+        template<typename T> T& add_component()
         {
-            static_assert(std::is_base_of<Component, T>(), "The component class must derive from Component!");
+            static_assert(std::is_base_of<Component, T>(), "The component class to add must derive from Component!");
 
             if (this->has_component<T>())
             {
@@ -65,19 +65,19 @@ class Entity
             }
 
             T* t = new T(*this);
-            this->component_map.emplace(std::type_index(typeid(T)), std::shared_ptr<T>(t));
+            this->component_map.emplace(std::type_index(typeid(T)), std::unique_ptr<T>(t));
 
             return *t;
         }
 
         template <typename T> T& get_component() const
         {
-            static_assert(std::is_base_of<Component, T>(), "The component class must derive from Component!");
+            static_assert(std::is_base_of<Component, T>(), "The component class to retrieve must derive from Component!");
             assert(this->has_component<T>());
             T& component = (T&) *this->component_map.at(std::type_index(typeid(T)));
             return component;
         }
 
     private:
-        std::unordered_map<std::type_index, std::shared_ptr<Component>> component_map;
+        std::unordered_map<std::type_index, std::unique_ptr<Component>> component_map;
 };
