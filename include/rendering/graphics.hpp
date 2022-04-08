@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 struct Color
 {
@@ -30,4 +31,6 @@ class Graphics
         static void draw_rectangle(int x, int y, int w, int h, const Color& color);
         static void draw_circle(int x, int y, int r, const Color& color);
         static void draw_line(int x1, int y1, int x2, int y2, const Color& color);
+
+        static SDL_Texture* create_texture(SDL_Surface* surface);
 };

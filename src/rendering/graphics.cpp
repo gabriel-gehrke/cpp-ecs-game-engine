@@ -21,7 +21,11 @@ static void print_hardware()
 void Graphics::init(uint w, uint h)
 {
     print_hardware();
+
+    // init video hardware and all image formats
     SDL_Init(SDL_INIT_VIDEO);
+    IMG_Init(0b1111);
+
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 }
@@ -107,4 +111,9 @@ void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color& color)
 {
     set_color(color);
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
+SDL_Texture* Graphics::create_texture(SDL_Surface* surface)
+{
+    return SDL_CreateTextureFromSurface(renderer, surface);
 }
