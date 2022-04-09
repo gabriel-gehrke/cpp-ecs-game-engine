@@ -20,3 +20,11 @@ Note: the actual package names my differ for your distro and package manager.
 
 To compile the engine/game, simply run the `make` command.<br>
 It can be parameterized to compile parts of the engine in parallel. e.g.: `make -j8` (8 threads)
+
+### Features
+- [x] Entities
+- [x] Components
+- [x] Kollisionen: Konvex & Konkav
+- [x] Linien/Kreise/Punkte zeichnen
+- [ ] Sprites
+- [ ] Sound
