@@ -1,5 +1,22 @@
 # cpp-ecs-game-engine
 
+### Features
+- [x] Entities
+- [x] Components
+- [x] Collisions
+- [x] FPS-independent physics
+- [x] Drawing simple shapes
+- [x] Keyboard input
+- [ ] Mouse input
+- [ ] Controller input
+- [ ] Particle systems
+- [ ] File IO / Serialization
+- [ ] Event System
+- [ ] Sprites
+- [ ] Shaders
+- [ ] Sound
+
+
 ### Requirements
 Before compiling the engine/game, make sure that the following libraries/programs are installed on the system:
 ```
@@ -20,19 +37,3 @@ Note: the actual package names my differ for your distro and package manager.
 
 To compile the engine/game, simply run the `make` command.<br>
 It can be parameterized to compile parts of the engine in parallel. e.g.: `make -j8` (8 threads)
-
-### Features
-- [x] Entities
-- [x] Components
-- [x] Collisions
-- [x] FPS-independent physics
-- [x] Drawing simple shapes
-- [x] Keyboard input
-- [ ] Mouse input
-- [ ] Controller input
-- [ ] Particle systems
-- [ ] File IO / Serialization
-- [ ] Event System
-- [ ] Sprites
-- [ ] Shaders
-- [ ] Sound
