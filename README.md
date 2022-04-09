@@ -24,7 +24,7 @@ It can be parameterized to compile parts of the engine in parallel. e.g.: `make 
 ### Features
 - [x] Entities
 - [x] Components
-- [x] Kollisionen: Konvex & Konkav
-- [x] Linien/Kreise/Punkte zeichnen
+- [x] Collisions
+- [x] Drawing simple shapes
 - [ ] Sprites
 - [ ] Sound
