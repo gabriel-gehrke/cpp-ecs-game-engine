@@ -26,5 +26,11 @@ It can be parameterized to compile parts of the engine in parallel. e.g.: `make 
 - [x] Components
 - [x] Collisions
 - [x] Drawing simple shapes
+- [x] Keyboard input
+- [ ] Mouse input
+- [ ] Controller input
+- [ ] File IO / Serialization
+- [ ] Event System
 - [ ] Sprites
+- [ ] Shaders
 - [ ] Sound
