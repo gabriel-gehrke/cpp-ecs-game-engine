@@ -29,6 +29,7 @@ It can be parameterized to compile parts of the engine in parallel. e.g.: `make 
 - [x] Keyboard input
 - [ ] Mouse input
 - [ ] Controller input
+- [ ] Particle systems
 - [ ] File IO / Serialization
 - [ ] Event System
 - [ ] Sprites
