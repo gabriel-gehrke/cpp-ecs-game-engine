@@ -1,5 +1,22 @@
 # cpp-ecs-game-engine
 
+### Features
+- [x] Entities
+- [x] Components
+- [x] Collisions
+- [x] FPS-independent physics
+- [x] Drawing simple shapes
+- [x] Keyboard input
+- [ ] Mouse input
+- [ ] Controller input
+- [ ] Particle systems
+- [ ] File IO / Serialization
+- [ ] Event System
+- [ ] Sprites
+- [ ] Shaders
+- [ ] Sound
+
+
 ### Requirements
 Before compiling the engine/game, make sure that the following libraries/programs are installed on the system:
 ```
