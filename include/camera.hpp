@@ -1,8 +1,8 @@
 #pragma once
 
 #include "vectors.hpp"
-#include "bounds.hpp"
-#include "graphics.hpp"
+#include "rendering/bounds.hpp"
+#include "rendering/graphics.hpp"
 
 class Camera
 {
