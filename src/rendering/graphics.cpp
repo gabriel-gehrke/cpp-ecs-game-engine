@@ -4,6 +4,9 @@
 static SDL_Window* window;
 static SDL_Renderer* renderer;
 
+static uint width;
+static uint height;
+
 static void set_color(const Color& color)
 {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -20,6 +23,9 @@ static void print_hardware()
 
 void Graphics::init(uint w, uint h)
 {
+    width = w;
+    height = h;
+
     print_hardware();
 
     // init video hardware and all image formats
@@ -28,6 +34,11 @@ void Graphics::init(uint w, uint h)
 
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+}
+
+int2 Graphics::get_size()
+{
+    return int2((int)width, (int)height);
 }
 
 void Graphics::close()

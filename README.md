@@ -13,6 +13,7 @@
 - [ ] File IO / Serialization
 - [ ] Event System
 - [ ] Sprites
+- [ ] UI / Text
 - [ ] Shaders
 - [ ] Sound
 
