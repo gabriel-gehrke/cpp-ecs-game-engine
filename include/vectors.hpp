@@ -22,7 +22,12 @@ struct float2
         float squared_length() const {return this->dot(*this);}
 
         // returns a normalized copy of the vector
-        float2 normalized() const;
+        float2 normalized() const
+        {
+            float2 v = float2(this->x, this->y);
+            v.normalize();
+            return v;
+        }
 
         // calculates the dot product of this and another vector
         float dot(const float2& o) const {return this->x * o.x + this->y * o.y;}
@@ -56,12 +61,20 @@ struct float2
         }
 
         // returns a string representation of the vector
-        std::string to_string() const;
+        std::string to_string() const
+        {
+            return "(" + std::to_string(this->x) + ", " + std::to_string(this->y) + ")";
+        }
 
         /* NON-CONST METHODS */
 
         // normalizes this vector
-        void normalize();
+        void normalize()
+        {
+            float l = this->length();
+            this->x /= l;
+            this->y /= l;
+        }
 
         /* OPERATORS */
 
@@ -86,4 +99,25 @@ struct float2
         static float2 zero() {return float2();};
         // equivalent to float2(1,1)
         static float2 one() {return float2(1, 1);};
+};
+
+struct int2
+{
+    public:
+        int2(int x, int y) : x(x), y(y) {}
+
+        int x;
+        int y;
+
+        int2 operator+(const int2& o) const {return int2(this->x + o.x, this->y + o.y);}
+        int2 operator-(const int2& o) const {return int2(this->x - o.x, this->y - o.y);}
+        int2 operator*(int s) const {return int2(this->x * s, this->y * s);}
+        int2 operator/(int s) const {return int2(this->x / s, this->y / s);}
+        float2 operator*(float s) const {return float2(this->x * s, this->y * s);}
+        float2 operator/(float s) const {return float2(this->x / s, this->y / s);}
+        void operator+=(const int2& o) {this->x += o.x; this->y += o.y;}
+        void operator-=(const int2& o) {this->x -= o.x; this->y -= o.y;}
+        void operator*=(int s) {this->x *= s; this->y *= s;}
+        void operator/=(int s) {this->x /= s; this->y /= s;}
+        bool operator==(const int2& o) {return this->x == o.x && this->y == o.y;}
 };

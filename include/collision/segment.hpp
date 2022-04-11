@@ -1,6 +1,6 @@
 #pragma once
 
-#include "simd.hpp"
+#include "vectors.hpp"
 
 // a line segment between two points a and b
 struct Segment

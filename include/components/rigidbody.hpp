@@ -1,7 +1,7 @@
 #pragma once
 
 #include "component.hpp"
-#include "simd.hpp"
+#include "vectors.hpp"
 
 class Rigidbody : public Component
 {

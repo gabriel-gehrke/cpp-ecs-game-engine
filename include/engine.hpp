@@ -3,6 +3,7 @@
 #include "rendering/graphics.hpp"
 #include "entity.hpp"
 #include "collision/physics.hpp"
+#include "camera.hpp"
 #include <vector>
 #include <memory>
 
@@ -27,6 +28,7 @@ class Engine
         Engine();
 
         Physics physics;
+        Camera camera;
         Scene scene;
 
         uint32_t target_fps = 60;

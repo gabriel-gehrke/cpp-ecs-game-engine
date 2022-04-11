@@ -11,7 +11,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "simd.hpp"
+#include "vectors.hpp"
 #include "random.hpp"
 
 class Engine;

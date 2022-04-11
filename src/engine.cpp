@@ -10,7 +10,7 @@ Entity& Scene::new_entity()
     return *e;
 }
 
-Engine::Engine() : scene(Scene(*this))
+Engine::Engine() : scene(Scene(*this)), camera(10.0f)
 {
     Graphics::init(1280, 720);
 }
