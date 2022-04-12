@@ -104,6 +104,7 @@ struct float2
 struct int2
 {
     public:
+        int2(): x(0), y(0) {}
         int2(int x, int y) : x(x), y(y) {}
 
         int x;

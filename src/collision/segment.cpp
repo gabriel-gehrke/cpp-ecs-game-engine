@@ -7,17 +7,8 @@ inline static bool is_point_within_segment(const Segment& seg, const float2& poi
 {
     float2 ab = seg.ab();
     float2 ap = point - seg.a;
-
-    if (ap.squared_length() > ab.squared_length())
-        return false;
     
-    ab.normalize();
-    ap.normalize();
-
-    if (ab.dot(ap) < 1.0f - EPSILON)
-        return false;
-    
-    return true;
+    return !(ap.squared_length() > ab.squared_length() || ab.dot(ap) < 0);
 }
 
 bool Segment::intersects(const Segment& seg, float2& intersection) const
