@@ -3,7 +3,7 @@
 
 static const float EPSILON = 1E-4;
 
-static bool is_point_within_segment(const Segment& seg, const float2& point)
+inline static bool is_point_within_segment(const Segment& seg, const float2& point)
 {
     float2 ab = seg.ab();
     float2 ap = point - seg.a;
