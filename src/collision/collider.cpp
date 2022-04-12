@@ -13,7 +13,7 @@ void Collider::add_vertex(const float2& v)
     this->verts.push_back(v);
 }
 
-float2 Collider::translate_point(float2 vert) const
+inline float2 Collider::translate_point(float2 vert) const
 {
     const auto& center = this->entity.position;
     const auto& rotation = this->entity.rotation;
@@ -44,13 +44,13 @@ void Collider::draw()
         Graphics::draw_circle((int)center.x, (int) center.y, 5, this->color);
     }
 
+    const auto& cam = this->entity.scene.engine.camera;
     for (auto i = 0; i < size; i++)
     {
-        const auto v1 = translate_point(this->verts[i]);
-        const auto v2 = translate_point(this->verts[(i + 1) % size]);
+        const int2 v1 = cam.world_to_screenpos(translate_point(this->verts[i]));
+        const int2 v2 = cam.world_to_screenpos(translate_point(this->verts[(i + 1) % size]));
 
-        //this->entity.scene.engine.graphics.draw_circle((int)v1.x, (int) v1.y, 5, this->color);
-        Graphics::draw_line((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, this->color);
+        Graphics::draw_line(v1.x, v1.y, v2.x, v2.y, this->color);
     }
 
     this->color = Color(0, 255, 0);

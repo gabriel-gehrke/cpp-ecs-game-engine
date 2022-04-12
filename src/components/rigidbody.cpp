@@ -9,7 +9,7 @@ void Rigidbody::update()
     this->entity.position += this->velocity * dt();
     this->entity.rotation += this->angular_velocity * dt();
     //this->velocity *= drag;
-    this->velocity.y += 9.81f * dt();
+    this->velocity.y -= 9.81f * dt();
 }
 
 
@@ -20,6 +20,8 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
 
     this->last_updated_frame = frame;
     
+    // TODO: calc collision depth. the segment class could be expanded to calculate the distance to the accumulated collision point.
+
     if (!you.entity.has_component<Rigidbody>() || !you.entity.get_component<Rigidbody>().simulated)
     {
         // static obstacle (just reflect the velocity vector)
@@ -33,6 +35,10 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
         // inspriration: https://fotino.me/2d-rigid-body-collision-response/
 
         Rigidbody& rb = you.entity.get_component<Rigidbody>();
+
+        // "undo" collision
+        this->entity.position -= this->velocity * dt() * 0.66f;
+        rb.entity.position -= rb.velocity * dt() * 0.66f;
 
         float2 rel_velocity = rb.velocity - this->velocity;
         float vel_along_normal = rel_velocity.dot(normal);
@@ -51,8 +57,8 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
         this->velocity -= impulse * inv_mass_a;
         rb.velocity += impulse * inv_mass_b;
 
-        this->entity.position += this->velocity * dt();
-        rb.entity.position += rb.velocity * dt();
+        this->entity.position += this->velocity * dt() * 0.66f;
+        rb.entity.position += rb.velocity * dt() * 0.66f;
 
         rb.last_updated_frame = frame;
     }
