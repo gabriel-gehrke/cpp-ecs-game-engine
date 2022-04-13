@@ -6,13 +6,13 @@
 - [x] Collisions
 - [x] FPS-independent physics
 - [x] Drawing simple shapes
+- [x] Sprites
 - [x] Keyboard input
 - [ ] Mouse input
 - [ ] Controller input
 - [ ] Particle systems
 - [ ] File IO / Serialization
 - [ ] Event System
-- [ ] Sprites
 - [ ] UI / Text
 - [ ] Shaders
 - [ ] Sound
