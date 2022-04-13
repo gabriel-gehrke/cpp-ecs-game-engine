@@ -27,6 +27,7 @@ class Entity
     
         uuid id = randid();
         float2 position = float2::zero();
+        float2 scale = float2::one();
         float rotation = 0;
         Scene& scene;
 

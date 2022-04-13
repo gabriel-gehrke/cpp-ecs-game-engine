@@ -124,6 +124,25 @@ void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color& color)
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
+void Graphics::draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation)
+{
+    const SDL_Rect src = {
+        .x = 0, 
+        .y = 0, 
+        .w = (int) sprite->width, 
+        .h = (int) sprite->height
+    };
+    const SDL_Rect dest = {
+        .x = x1,
+        .y = y1,
+        .w = x2 - x1,
+        .h = y2 - y1
+    };
+
+    // draw with default rotation center point (NULL)
+    SDL_RenderCopyEx(renderer, sprite->texture, &src, &dest, rotation, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
+}
+
 SDL_Texture* Graphics::create_texture(SDL_Surface* surface)
 {
     return SDL_CreateTextureFromSurface(renderer, surface);
