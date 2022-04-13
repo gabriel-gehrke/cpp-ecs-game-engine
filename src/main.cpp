@@ -1,6 +1,6 @@
-#include "engine.hpp"
-#include "rendering/boxrenderer.hpp"
-#include "collision/collider.hpp"
+#include "engine/engine.hpp"
+#include "engine/rendering/boxrenderer.hpp"
+#include "engine/collision/collider.hpp"
 
 int main()
 {
