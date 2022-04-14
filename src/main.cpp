@@ -30,9 +30,6 @@ int main()
     const uint NUM_BALLS = 8;
     const float BALL_RADIUS = 0.2f;
     const float BALL_VERTS = 12;
-    std::cout << "Loading sprite..." << std::endl;
-    Sprite mario = Sprite::load("resources/mario.jpg");
-    std::cout << mario.height << std::endl;
 
     for (auto i = 0; i < NUM_BALLS; i++)
     {

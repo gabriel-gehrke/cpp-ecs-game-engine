@@ -39,8 +39,13 @@ bool Segment::intersects(const Segment& seg, float2& intersection) const
     float b = x3 * y4 - y3 * x4;
     float x = (a * x34 - b * x12) / c;
     float y = (a * y34 - b * y12) / c;
-    intersection = float2(x, y);
+    float2 point = float2(x, y);
 
     // 2. check if point lies on both segments
-    return is_point_within_segment(*this, intersection) && is_point_within_segment(seg, intersection);
+    if (is_point_within_segment(*this, point) && is_point_within_segment(seg, point))
+    {
+        intersection = point;
+        return true;
+    }
+    return false;
 }

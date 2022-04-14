@@ -36,30 +36,28 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
 
         Rigidbody& rb = you.entity.get_component<Rigidbody>();
 
-        // "undo" collision
-        this->entity.position -= this->velocity * dt() * 0.66f;
-        rb.entity.position -= rb.velocity * dt() * 0.66f;
-
         float2 rel_velocity = rb.velocity - this->velocity;
         float vel_along_normal = rel_velocity.dot(normal);
 
         // don't resolve if velocities are already seperating
-        if (vel_along_normal > 0)
-            return;
+        if (vel_along_normal < 0)
+        {
+            float restitution = std::min(this->bounciness, rb.bounciness);
+            float impulse_scal = -(1.0f + restitution) * vel_along_normal;
+            float inv_mass_a = (1.0f / this->mass);
+            float inv_mass_b = (1.0f / rb.mass);
+            impulse_scal /= inv_mass_a + inv_mass_b;
 
-        float restitution = std::min(this->bounciness, rb.bounciness);
-        float impulse_scal = -(1.0f + restitution) * vel_along_normal;
-        float inv_mass_a = (1.0f / this->mass);
-        float inv_mass_b = (1.0f / rb.mass);
-        impulse_scal /= inv_mass_a + inv_mass_b;
+            float2 impulse = normal * impulse_scal;
+            this->velocity -= impulse * inv_mass_a;
+            rb.velocity += impulse * inv_mass_b;
 
-        float2 impulse = normal * impulse_scal;
-        this->velocity -= impulse * inv_mass_a;
-        rb.velocity += impulse * inv_mass_b;
-
-        this->entity.position += this->velocity * dt() * 0.66f;
-        rb.entity.position += rb.velocity * dt() * 0.66f;
-
-        rb.last_updated_frame = frame;
+            rb.last_updated_frame = frame;
+        }
     }
+
+    // resolve collision by determining collision depth and seperating objects properly
+
+    this->entity.position += this->velocity * dt() * 0.66f;
+    you.entity.position += float2();
 }
