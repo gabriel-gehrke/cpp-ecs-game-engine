@@ -32,6 +32,7 @@ class Graphics
         static void set_window_title(const char* s);
         static void draw_rectangle(int x, int y, int w, int h, const Color& color);
         static void draw_circle(int x, int y, int r, const Color& color);
+        static void draw_circle(int2 p, int r, const Color& color) {return draw_circle(p.x, p.y, r, color);}
         static void draw_line(int x1, int y1, int x2, int y2, const Color& color);
         static void draw_line(const int2& v, const int2& w, const Color& color) {return draw_line(v.x, v.y, w.x, w.y, color);}
         static void draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation);

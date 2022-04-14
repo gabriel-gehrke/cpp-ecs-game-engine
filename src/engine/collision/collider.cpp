@@ -15,6 +15,12 @@ void Collider::add_vertex(const float2& v)
 
 inline float2 Collider::translate_point(float2 vert) const
 {
+    // apply scale
+    const auto& scale = this->entity.scale;
+    vert.x *= scale.x;
+    vert.y *= scale.y;
+
+    // apply entity position and rotation
     const auto& center = this->entity.position;
     const auto& rotation = this->entity.rotation;
     return (vert + center).rotate_around(center, rotation);
@@ -114,14 +120,19 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
 
 void Collider::on_collision_enter(const Collider& me, const Collider& you, const float2& p, const float2& normal)
 {
+    const auto& cam = this->entity.scene.engine.camera;
+
     // draw the collision point
-    Graphics::draw_circle((int)p.x, (int)p.y, 5, Color(255,255,0));
+    Graphics::draw_circle(cam.world_to_screenpos(p), 5, Color(255,255,0));
+
     // calculate and visualize the collision normal
-    const float len = 25.0f;
+    const float len = 0.1f;
     float2 l = normal * len;
-    float2 lp1 = p + l;
-    float2 lp2 = p - l;
-    Graphics::draw_line((int)lp1.x, (int)lp1.y, (int)lp2.x, (int)lp2.y, Color(255, 0, 255));
+
+    int2 lp1 = cam.world_to_screenpos(p + l);
+    int2 lp2 = cam.world_to_screenpos(p - l);
+
+    Graphics::draw_line(lp1, lp2, Color(255, 0, 255));
 
     this->color = Color(255, 0, 0);
 }

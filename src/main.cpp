@@ -28,8 +28,8 @@ int main()
 
     // balls
     const uint NUM_BALLS = 8;
-    const float BALL_RADIUS = 0.4f;
-    const float BALL_VERTS = 6;
+    const float BALL_RADIUS = 0.2f;
+    const float BALL_VERTS = 12;
     std::cout << "Loading sprite..." << std::endl;
     Sprite mario = Sprite::load("resources/mario.jpg");
     std::cout << mario.height << std::endl;
@@ -40,8 +40,7 @@ int main()
         float posY = map(0, 1023, 4.0f, 1.0f, rand32() % 1024);
 
         Entity& e = engine.scene.new_entity();
-        e.scale = float2::one() * BALL_RADIUS * 2;
-        e.add_component<SpriteRenderer>().sprite = &mario;
+        e.scale = float2(BALL_RADIUS, BALL_RADIUS) * 2.0f;
         e.add_component<Rigidbody>();
         e.get_component<Rigidbody>().bounciness = 0.9f;
         e.position = float2(posX, posY);
@@ -51,11 +50,13 @@ int main()
         for (auto i = 0; i < BALL_VERTS; i++)
         {
             float angle = ((M_PI * 2) / BALL_VERTS) * i;
-            float x = std::sin(angle) * BALL_RADIUS;
-            float y = std::cos(angle) * BALL_RADIUS;
+            float x = std::sin(angle);
+            float y = std::cos(angle);
             col.add_vertex(float2(x, y));
         }
     }
+
+   // squares
 
     // hand over control to engine
     engine.loop();
