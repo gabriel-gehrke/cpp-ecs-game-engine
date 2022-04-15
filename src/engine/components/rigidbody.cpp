@@ -20,14 +20,31 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
 
     this->last_updated_frame = frame;
     
-    // TODO: calc collision depth. the segment class could be expanded to calculate the distance to the accumulated collision point.
+    // determine collision depth
+
+    float collision_depth = std::numeric_limits<float>::max();
+    const auto n = me.num_segments();
+    const auto m = you.num_segments();
+
+    for (auto i = 0; i < n; i++)
+    {
+        const auto& seg = me.segment(i);
+        collision_depth = std::min(collision_depth, seg.distance(point));
+    }
+    for (auto i = 0; i < m; i++)
+    {
+        const auto& seg = you.segment(i);
+        collision_depth = std::min(collision_depth, seg.distance(point));
+    }
+
+    // react to collision
 
     if (!you.entity.has_component<Rigidbody>() || !you.entity.get_component<Rigidbody>().simulated)
     {
         // static obstacle (just reflect the velocity vector)
-        this->velocity = velocity.reflect(normal) * this->bounciness;
 
-        this->entity.position += this->velocity * dt();
+        me.entity.position -= this->velocity * dt();
+        this->velocity = velocity.reflect(normal) * this->bounciness;
     }
     else
     {
@@ -35,6 +52,17 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
         // inspriration: https://fotino.me/2d-rigid-body-collision-response/
 
         Rigidbody& rb = you.entity.get_component<Rigidbody>();
+
+        if (rb.velocity.dot(normal) > 0)
+        {
+            me.entity.position += normal * collision_depth;
+            rb.entity.position -= normal * collision_depth; 
+        }
+        else
+        {
+            me.entity.position -= normal * collision_depth;
+            rb.entity.position += normal * collision_depth;
+        }
 
         float2 rel_velocity = rb.velocity - this->velocity;
         float vel_along_normal = rel_velocity.dot(normal);
@@ -55,9 +83,4 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
             rb.last_updated_frame = frame;
         }
     }
-
-    // resolve collision by determining collision depth and seperating objects properly
-
-    this->entity.position += this->velocity * dt() * 0.66f;
-    you.entity.position += float2();
 }

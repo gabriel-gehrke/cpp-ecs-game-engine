@@ -5,7 +5,7 @@
 
 Collider::Collider(Entity& entity) : Renderer(entity)
 {
-    entity.scene.engine.physics.colliders.push_back(std::shared_ptr<Collider>(this));
+    entity.scene.engine.physics.colliders.push_back(this);
 };
 
 void Collider::add_vertex(const float2& v)

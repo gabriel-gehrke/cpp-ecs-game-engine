@@ -1,17 +1,18 @@
 #include "engine/collision/physics.hpp"
 #include "engine/collision/collider.hpp"
 #include "engine/engine.hpp"
+#include "engine/random.hpp"
 
 void Physics::step() const
 {
     const auto size = this->colliders.size();
     for (auto i = 0; i < size; i++)
     {
-        const auto& col1 = this->colliders[i];
+        const Collider* col1 = this->colliders[i];
 
         for (auto j = i + 1; j < size; j++)
         {
-            const auto& col2 = this->colliders[j];
+            const Collider* col2 = this->colliders[j];
             float2 p;
             float2 n;
 

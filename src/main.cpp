@@ -27,9 +27,9 @@ int main()
     }
 
     // balls
-    const uint NUM_BALLS = 8;
-    const float BALL_RADIUS = 0.2f;
-    const float BALL_VERTS = 12;
+    const uint NUM_BALLS = 12;
+    const float BALL_RADIUS = 0.1f;
+    const float BALL_VERTS = 8;
 
     for (auto i = 0; i < NUM_BALLS; i++)
     {
@@ -39,7 +39,7 @@ int main()
         Entity& e = engine.scene.new_entity();
         e.scale = float2(BALL_RADIUS, BALL_RADIUS) * 2.0f;
         e.add_component<Rigidbody>();
-        e.get_component<Rigidbody>().bounciness = 0.9f;
+        e.get_component<Rigidbody>().bounciness = 0.8f;
         e.position = float2(posX, posY);
 
         Collider& col = e.add_component<Collider>();
