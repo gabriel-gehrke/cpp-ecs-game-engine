@@ -29,7 +29,7 @@ if __name__ == "__main__":
             data = [str(b) for b in f.read()]
             arr = "{" + ",".join(data) + "}"
 
-            lines.append(f"static const char {varname}[] = {arr};")
+            lines.append(f"static const unsigned char {varname}[] = {arr};")
             vars.append((fn, varname, len(data)))
     lines.append("")
 
@@ -45,6 +45,10 @@ if __name__ == "__main__":
         lines.append(line)
 
     lines.append("};")
+    lines.append("")
+
+    lines.append("// ACCESS METHOD")
+    lines.append("const Resource& Resource::load(const std::string path) {return res_map.at(path);}")
 
     out.write("\n".join(lines))
 

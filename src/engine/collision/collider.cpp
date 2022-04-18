@@ -51,7 +51,7 @@ void Collider::draw()
     }
 
     const auto& cam = this->entity.scene.engine.camera;
-    for (auto i = 0; i < size; i++)
+    for (uint i = 0; i < size; i++)
     {
         const int2 v1 = cam.world_to_screenpos(translate_point(this->verts[i]));
         const int2 v2 = cam.world_to_screenpos(translate_point(this->verts[(i + 1) % size]));
@@ -71,10 +71,10 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
     float2 avg = float2::zero();
 
     const auto l = num_segments();
-    for (auto i = 0; i < l; i++)
+    for (uint i = 0; i < l; i++)
     {
         const auto k = c.num_segments();
-        for (auto j = 0; j < k; j++)
+        for (uint j = 0; j < k; j++)
         {
             const auto s1 = this->segment(i);
             const auto s2 = c.segment(j);
@@ -95,7 +95,7 @@ bool Collider::collides_with(const Collider& c, float2& point, float2& normal) c
     // linear regression over all collision points
     float d = 0;
     float e = 0;
-    for (auto i = 0; i < collisions; i++)
+    for (uint i = 0; i < collisions; i++)
     {
         float f = points[i].x - avg.x; 
 

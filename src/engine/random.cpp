@@ -39,7 +39,7 @@ uint64_t rand64()
 {
     seed();
 
-    uint64_t r;
+    uint64_t r = 0;
     auto ptr = (uint16_t*) &r;
     for (auto i = 0; i < 4; i++)
     {

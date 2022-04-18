@@ -2,6 +2,7 @@
 
 
 #include "SDL2/SDL_image.h"
+#include <string>
 
 struct Sprite
 {
@@ -10,5 +11,5 @@ struct Sprite
         uint width;
         uint height;
 
-        static Sprite load(const char* path);
+        static Sprite load(const std::string path);
 };

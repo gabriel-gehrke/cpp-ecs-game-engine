@@ -26,12 +26,12 @@ void Rigidbody::on_collision_enter(const Collider& me, const Collider& you, cons
     const auto n = me.num_segments();
     const auto m = you.num_segments();
 
-    for (auto i = 0; i < n; i++)
+    for (uint i = 0; i < n; i++)
     {
         const auto& seg = me.segment(i);
         collision_depth = std::min(collision_depth, seg.distance(point));
     }
-    for (auto i = 0; i < m; i++)
+    for (uint i = 0; i < m; i++)
     {
         const auto& seg = you.segment(i);
         collision_depth = std::min(collision_depth, seg.distance(point));

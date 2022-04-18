@@ -15,7 +15,7 @@ int main()
         Collider& col = e.add_component<Collider>();
         col.add_vertex(float2(-5.0f, 5.0f));
         const uint num_points = 15;
-        for (auto i = 0; i < num_points; i++)
+        for (uint i = 0; i < num_points; i++)
         {
             float x = map(0, num_points - 1, -4.5f, 4.5f, i);
             float y = map(0, 1023, engine.camera.bounds().min.y, -1.0f, rand32() % 1024);
@@ -29,9 +29,9 @@ int main()
     // balls
     const uint NUM_BALLS = 12;
     const float BALL_RADIUS = 0.1f;
-    const float BALL_VERTS = 8;
+    const float BALL_VERTS = 13;
 
-    for (auto i = 0; i < NUM_BALLS; i++)
+    for (uint i = 0; i < NUM_BALLS; i++)
     {
         float posX = map(0, NUM_BALLS - 1, -3.0f, 3.0f, i);
         float posY = map(0, 1023, 4.0f, 1.0f, rand32() % 1024);
@@ -44,7 +44,7 @@ int main()
 
         Collider& col = e.add_component<Collider>();
 
-        for (auto i = 0; i < BALL_VERTS; i++)
+        for (uint i = 0; i < BALL_VERTS; i++)
         {
             float angle = ((M_PI * 2) / BALL_VERTS) * i;
             float x = std::sin(angle);
@@ -53,7 +53,13 @@ int main()
         }
     }
 
-   // squares
+    // sprite
+    Sprite s = Sprite::load("mario.jpg");
+    {
+        auto& e = engine.scene.new_entity();
+        auto& r = e.add_component<SpriteRenderer>();
+        r.sprite = &s;
+    }
 
     // hand over control to engine
     engine.loop();

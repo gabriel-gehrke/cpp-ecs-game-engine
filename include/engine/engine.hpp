@@ -12,8 +12,8 @@ class Engine
         Engine();
 
         Physics physics;
-        Camera camera;
         Scene scene;
+        Camera camera;
 
         uint32_t target_fps = 60;
         uint64_t framecounter = 1;
