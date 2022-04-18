@@ -1,8 +1,8 @@
 #pragma once
 #include "engine/vectors.hpp"
 #include "engine/rendering/sprite.hpp"
-#include "SDL.h"
-#include "SDL_image.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 struct Color
 {

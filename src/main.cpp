@@ -3,7 +3,6 @@
 #include "engine/collision/collider.hpp"
 #include "engine/components/rigidbody.hpp"
 #include "engine/components/spriterenderer.hpp"
-#include <SDL.h>
 
 int main()
 {
