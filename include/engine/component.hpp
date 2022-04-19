@@ -11,7 +11,10 @@ class Component
     public:
         Component(Entity& entity) : entity(entity) {}
 
-
+        virtual void start()
+        {
+            
+        }
         virtual void update() = 0;
 
         // can be overriden to model behavior on entities with colliders attached
