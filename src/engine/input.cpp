@@ -28,3 +28,10 @@ bool Input::is_key_up(SDL_Keycode key)
 {
     return !is_key_down(key);
 }
+
+int2 Input::mouse_position()
+{
+    int2 pos;
+    SDL_GetMouseState(&pos.x, &pos.y);
+    return pos;
+}
