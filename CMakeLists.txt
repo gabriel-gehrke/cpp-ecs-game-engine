@@ -33,22 +33,13 @@ find_package(SDL2 REQUIRED)
 # Add SDL2 image
 find_package(SDL2_image REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS})
+# Build resources
+execute_process(
+        COMMAND "python3" "${CMAKE_SOURCE_DIR}/scripts/make-resources.py"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # add all CMakeList files to the
 add_subdirectory(src)
 add_subdirectory(app)
 add_subdirectory(test)
 
-# This is a "default" library, and will match the *** variable setting.
-# Other common choices are STATIC, SHARED, and MODULE
-# Including header files here helps IDEs but is not required.
-# Output libname matches target name, with the usual extensions on your system
-
-
-# Link each target with other targets or add options, etc.
-
-# Adding something we can run - Output name matches target name
-
-# Make sure you link your targets with this command. It can also link libraries and
-# even flags, so linking a target that does not exist will not give a configure-time error.

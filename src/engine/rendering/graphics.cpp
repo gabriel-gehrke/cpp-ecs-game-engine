@@ -26,6 +26,7 @@ void Graphics::init(uint w, uint h)
     width = w;
     height = h;
 
+
     print_hardware();
 
     // init video hardware and all image formats
