@@ -3,6 +3,7 @@
 #include "engine/collision/collider.hpp"
 #include "engine/components/rigidbody.hpp"
 #include "engine/components/spriterenderer.hpp"
+#include "engine/ui/text.hpp"
 
 int main()
 {
@@ -60,6 +61,15 @@ int main()
         auto& r = e.add_component<SpriteRenderer>();
         r.sprite = &s;
     }
+
+    // text
+    {
+        auto& e = engine.scene.new_entity();
+        auto& r = e.add_component<UIText>();
+        r.set_font_size(100);
+        r.set_text("Send Nudes");
+    }
+    
 
     // hand over control to engine
     engine.loop();

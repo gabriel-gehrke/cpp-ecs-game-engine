@@ -1,12 +1,13 @@
 #include "engine/engine.hpp"
 #include "engine/input.hpp"
 #include "engine/algebra.hpp"
+#include "engine/ui/text.hpp"
 #include <chrono>
 
 Entity& Scene::new_entity()
 {
     Entity* e = new Entity(*this);
-    this->entities.push_back(std::unique_ptr<Entity>(e));
+    this->entities.push_back(e);
     return *e;
 }
 

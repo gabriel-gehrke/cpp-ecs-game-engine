@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 #include "engine/entity.hpp"
 
 class Engine;
@@ -16,6 +15,6 @@ class Scene
 
         Engine& engine;
 
-        std::vector<std::unique_ptr<Entity>> entities;
+        std::vector<Entity*> entities;
         Entity& new_entity();
 };

@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <memory>
 #include <cstdint>
 #include <typeinfo>
 #include <typeindex>
@@ -61,12 +60,12 @@ class Entity
 
             if (this->has_component<T>())
             {
-                std::cout << "Entity " << this << " already has Component " << typeid(T).name() << " attached!" << std::endl;
+                std::cout << "Warn: Entity " << this << " already has Component " << typeid(T).name() << " attached!" << std::endl;
                 return this->get_component<T>();
             }
 
             T* t = new T(*this);
-            this->component_map.emplace(std::type_index(typeid(T)), std::unique_ptr<T>(t));
+            this->component_map.emplace(std::type_index(typeid(T)), t);
 
             return *t;
         }
@@ -80,5 +79,5 @@ class Entity
         }
 
     private:
-        std::unordered_map<std::type_index, std::unique_ptr<Component>> component_map;
+        std::unordered_map<std::type_index, Component*> component_map;
 };

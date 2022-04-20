@@ -150,21 +150,7 @@ SDL_Texture* Graphics::create_texture(SDL_Surface* surface)
     return SDL_CreateTextureFromSurface(renderer, surface);
 }
 
-void Graphics::draw_text(const std::string& text, const Font& font, int2 pos, const Color& color)
+void Graphics::draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest)
 {
-    //SDL_Surface* surface = TTF_RenderText_Solid(font.ttf, text.c_str(), *((SDL_Color*)&color));
-    SDL_Surface* surface = TTF_RenderText_Blended(font.ttf, text.c_str(), *((SDL_Color*)&color));
-    if (!surface) return;
-
-    const int w = surface->w;
-    const int h = surface->h;
-
-    const SDL_Rect src = {0, 0, w, h};
-    const SDL_Rect dest = {pos.x, pos.y, w, h};
-
-    SDL_Texture* texture = create_texture(surface);
     SDL_RenderCopy(renderer, texture, &src, &dest);
-
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
 }
