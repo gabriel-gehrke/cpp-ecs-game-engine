@@ -1,6 +1,5 @@
 #include "engine/ui/text.hpp"
 #include <stdexcept>
-#include <iostream>
 
 void UIText::rerender()
 {
@@ -13,8 +12,6 @@ void UIText::rerender()
     {
         SDL_DestroyTexture(this->cached_texture);
     }
-
-    std::cout << "Rerendering font " << this->font_resource->path << std::endl;
 
     // load font
     SDL_RWops* io = SDL_RWFromConstMem(this->font_resource->data, (int) this->font_resource->size);
@@ -31,7 +28,6 @@ void UIText::rerender()
         throw std::runtime_error(std::string("error during text rendering: ") + std::string(TTF_GetError()));
     }
     this->texture_size = int2(surface->w, surface->h);
-    std::cout << "ptsize " << this->font_size << " resolution " << surface->w << " x " << surface->h << std::endl;
     this->cached_texture = Graphics::create_texture(surface);
     if (this->cached_texture == NULL)
     {
@@ -68,15 +64,23 @@ void UIText::set_color(const Color& color)
 
 void UIText::update()
 {
+    rerender();
     if (this->cached_texture == NULL)
     {
         throw std::runtime_error(std::string("UIText texture is NULL!"));
     }
 
-    const int2& pos = this->screen_position;
-    const int w = this->texture_size.x;
-    const int h = this->texture_size.y;
+    // apply alignment
+    const int2& size = this->texture_size;
+    const int2 hsize = this->texture_size / 2;
+    const int hor = this->alignment & 0b0011;
+    const int vert = this->alignment & 0b1100;
+    int2 pos = this->screen_position;
+    pos.x -= hsize.x * (hor == CENTER) + size.x * (hor == RIGHT);
+    pos.y -= hsize.y * (vert == CENTER) + size.y * (vert == BOTTOM);
 
+    const auto& w = this->texture_size.x;
+    const auto& h = this->texture_size.y;
     const SDL_Rect src = {0, 0, w, h};
     const SDL_Rect dest = {pos.x, pos.y, w, h};
 

@@ -3,6 +3,7 @@
 
 static SDL_Window* window;
 static SDL_Renderer* renderer;
+static Color background = Color::black();
 
 static uint width;
 static uint height;
@@ -12,22 +13,10 @@ static void set_color(const Color& color)
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 }
 
-static void print_hardware()
-{
-    const auto drivers = SDL_GetNumVideoDrivers();
-    for (auto i = 0; i < drivers; i++)
-    {
-        std::cout << i << ": " << SDL_GetVideoDriver(i) << std::endl;
-    }
-}
-
 void Graphics::init(uint w, uint h)
 {
     width = w;
     height = h;
-
-
-    print_hardware();
 
     // init video hardware and all image formats
     SDL_Init(SDL_INIT_VIDEO);
@@ -35,7 +24,7 @@ void Graphics::init(uint w, uint h)
     TTF_Init();
 
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, 0);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 }
 
 int2 Graphics::get_size()
@@ -52,7 +41,7 @@ void Graphics::close()
 
 void Graphics::clear()
 {
-    set_color(Color::black());
+    set_color(background);
     SDL_RenderClear(renderer);
 }
 

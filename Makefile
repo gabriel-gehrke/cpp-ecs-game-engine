@@ -17,7 +17,7 @@ build/game: build/resources.cpp $(OBJ_FILES)
 	@mkdir -p $(@D)
 	g++ $(CPP_ARGS) -o $@ build/resources.cpp $(OBJ_FILES) -lSDL2 -lSDL2_image -lSDL2_ttf -Iinclude
 
-build/resources.cpp: 
+build/resources.cpp:
 	@mkdir -p $(@D)
 	python3 scripts/make-resources.py
 
@@ -27,4 +27,3 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 clean:
 	rm -rf ./build/
-	mkdir -p ./build

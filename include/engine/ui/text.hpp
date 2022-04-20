@@ -6,6 +6,16 @@
 #include <string>
 #include <SDL2/SDL.h>
 
+enum UITextAlignment
+{
+    CENTER = 0,
+
+    LEFT   = 0b0010,
+    RIGHT  = 0b0001,
+    TOP    = 0b1000,
+    BOTTOM = 0b0100
+};
+
 class UIText : public Component
 {
     private:
@@ -34,4 +44,5 @@ class UIText : public Component
         void set_color(const Color& color);
         
         int2 screen_position;
+        int alignment = LEFT | TOP;
 };
