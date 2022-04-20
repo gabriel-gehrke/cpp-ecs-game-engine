@@ -8,5 +8,5 @@ class Physics
         std::vector<Collider*> colliders;
 
         // calculates a physics step: collisions and movements
-        void step() const;
+        void step();
 };

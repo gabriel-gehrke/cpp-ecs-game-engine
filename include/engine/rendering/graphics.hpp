@@ -1,11 +1,19 @@
 #pragma once
 #include "engine/vectors.hpp"
 #include "engine/rendering/sprite.hpp"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include "engine/rendering/font.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <string>
 
 struct Color
 {
+    u_char r;
+    u_char g;
+    u_char b;
+    u_char a;
+
     public:
         Color(u_char grey) : r(grey), g(grey), b(grey), a(SDL_ALPHA_OPAQUE) {}
         Color(u_char r, u_char g, u_char b) : r(r), g(g), b(b), a(SDL_ALPHA_OPAQUE) {}
@@ -13,11 +21,6 @@ struct Color
 
         static Color black() {return Color(0,0,0);}
         static Color white() {return Color(255,255,255);}
-
-        u_char r;
-        u_char g;
-        u_char b;
-        u_char a;
 };
 
 class Graphics
@@ -37,6 +40,8 @@ class Graphics
         static void draw_line(const int2& v, const int2& w, const Color& color) {return draw_line(v.x, v.y, w.x, w.y, color);}
         static void draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation);
         static void draw_sprite(const Sprite* sprite, int2 v, int2 w, float rotation) {return draw_sprite(sprite, v.x, v.y, w.x, w.y, rotation);}
+
+        static void draw_text(const std::string& text, const Font& font, int2 pos, const Color& color);
 
         static int2 get_size();
         static SDL_Texture* create_texture(SDL_Surface* surface);

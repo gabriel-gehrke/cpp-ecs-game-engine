@@ -11,5 +11,5 @@ struct Sprite
         uint width;
         uint height;
 
-        static Sprite load(const std::string path);
+        static Sprite load(const std::string& path);
 };

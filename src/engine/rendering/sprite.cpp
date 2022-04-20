@@ -3,7 +3,7 @@
 #include "engine/resources.hpp"
 #include <stdexcept>
 
-Sprite Sprite::load(const std::string path)
+Sprite Sprite::load(const std::string& path)
 {
     Sprite s;
 

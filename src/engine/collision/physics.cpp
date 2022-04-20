@@ -3,14 +3,26 @@
 #include "engine/engine.hpp"
 #include "engine/random.hpp"
 
-void Physics::step() const
+void Physics::step()
 {
-    const auto size = this->colliders.size();
-    for (uint i = 0; i < size; i++)
+    const size_t size = this->colliders.size();
+
+    // basic swapping algorithm
+    for (auto i = size; i != 1; i--)
+    {
+        auto index1 = i - 1;
+        auto index2 = rand32() % index1;
+
+        auto temp = this->colliders[index1];
+        this->colliders[index1] = this->colliders[index2];
+        this->colliders[index2] = temp;
+    }
+
+    for (auto i = 0U; i < size; i++)
     {
         const Collider* col1 = this->colliders[i];
 
-        for (uint j = i + 1; j < size; j++)
+        for (auto j = i + 1; j < size; j++)
         {
             const Collider* col2 = this->colliders[j];
             float2 p;

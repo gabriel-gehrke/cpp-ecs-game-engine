@@ -48,7 +48,7 @@ if __name__ == "__main__":
     lines.append("")
 
     lines.append("// ACCESS METHOD")
-    lines.append("const Resource& Resource::load(const std::string path) {return res_map.at(path);}")
+    lines.append("const Resource& Resource::load(const std::string& path) {return res_map.at(path);}")
 
     out.write("\n".join(lines))
 

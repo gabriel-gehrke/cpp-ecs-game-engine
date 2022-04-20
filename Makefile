@@ -15,7 +15,7 @@ OBJ_FILES := $(subst .cpp,.o,$(subst $(SRC_DIR),$(BUILD_DIR),$(CPP_FILES)))
 
 build/game: build/resources.cpp $(OBJ_FILES)
 	@mkdir -p $(@D)
-	g++ $(CPP_ARGS) -o $@ build/resources.cpp $(OBJ_FILES) -lSDL2 -lSDL2_image -Iinclude
+	g++ $(CPP_ARGS) -o $@ build/resources.cpp $(OBJ_FILES) -lSDL2 -lSDL2_image -lSDL2_ttf -Iinclude
 
 build/resources.cpp: 
 	@mkdir -p $(@D)

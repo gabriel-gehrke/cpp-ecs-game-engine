@@ -9,5 +9,5 @@ struct Resource
     const size_t size;
 
     public:
-        static const Resource& load(const std::string path);
+        static const Resource& load(const std::string& path);
 };
