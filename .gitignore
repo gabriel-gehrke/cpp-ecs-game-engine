@@ -4,6 +4,9 @@
 # build dir
 build/
 
+# external libraries should not be pushed ass well
+extern/*
+
 # VS Code
 .vscode
 
