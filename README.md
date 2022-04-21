@@ -52,7 +52,9 @@ After the build process finished you find the...
 
 ### Possible Problems
 
-CMake might have a Problem finding the SDL2_image lib on your System if you are on a x64 Linux System.<br>
+CMake might have a Problem finding the SDL2_image lib on your System if you are on a x64 Linux System. 
+This is because the SDL2_image library has currently no cmake configuration in the repo. 
+To let CMake recognize the library nevertheless, you have to insert the missing CMake-configuration.<br>
 In that case CMake won't build the MakeFile and stop when running ```cmake ..```. <br>
 If that's the case do the following:
 

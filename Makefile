@@ -27,3 +27,4 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 clean:
 	rm -rf ./build/
+	mkdir -p ./build
