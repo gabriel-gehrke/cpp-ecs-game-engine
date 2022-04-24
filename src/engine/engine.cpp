@@ -75,20 +75,5 @@ void Engine::loop()
 
         // sdl events
         handle_events();
-
-        // keyboard test
-        uint keysdown = 0;
-        for (char c = 'a'; c <= 'z'; c++)
-        {
-            if (Input::is_key_down(c))
-            {
-                std::cout << c;
-                keysdown++;
-            }
-        }
-        if (keysdown > 0)
-        {
-            std::cout << std::endl;
-        }
     }
 }

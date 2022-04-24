@@ -1,8 +1,10 @@
 #include "engine/input.hpp"
+#include "engine/event/event_manager.hpp"
 #include <unordered_map>
 
-std::unordered_map<SDL_Keycode, bool> key_pressed_hashmap;
+static std::unordered_map<SDL_Keycode, bool> key_pressed_hashmap;
 
+EventManager<SDL_Keycode> Input::on_key_down = EventManager<SDL_Keycode>();
 
 void Input::handle_event(SDL_Event* event)
 {
@@ -11,6 +13,7 @@ void Input::handle_event(SDL_Event* event)
     if (event->type == SDL_KEYDOWN)
     {
         key_pressed_hashmap.insert_or_assign(key, true);
+        on_key_down.fire(key);
     }
     else if (event->type == SDL_KEYUP)
     {

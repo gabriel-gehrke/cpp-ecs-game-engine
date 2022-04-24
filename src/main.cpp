@@ -4,6 +4,8 @@
 #include "engine/components/rigidbody.hpp"
 #include "engine/components/spriterenderer.hpp"
 #include "engine/ui/text.hpp"
+#include "engine/input.hpp"
+#include <cstdlib>
 
 int main()
 {
@@ -55,7 +57,7 @@ int main()
     }
 
     // sprite
-    Sprite s = Sprite::load("mario.jpg");
+    Sprite s = Sprite::load("guy.png");
     {
         auto& e = engine.scene.new_entity();
         auto& r = e.add_component<SpriteRenderer>();
