@@ -36,10 +36,10 @@ bool Bounds::contains(const float2& p) const
 {
     const auto& min = this->min;
     const auto& max = this->max;
-    return between(min.x, p.x, max.x) && between(min.y, p.y, max.y);
+    return between(min.x, p.x, max.x) & between(min.y, p.y, max.y);
 }
 
 bool Bounds::contains(const Bounds& bounds) const
 {
-    return this->contains(bounds.min) && this->contains(bounds.max);
+    return this->contains(bounds.min) & this->contains(bounds.max);
 }

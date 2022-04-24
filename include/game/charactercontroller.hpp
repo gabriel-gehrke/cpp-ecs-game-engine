@@ -15,6 +15,7 @@ class CharacterController : public Component
             allocated_sprite = new Sprite();
             *allocated_sprite = Sprite::load("guy.png");
             renderer.sprite = allocated_sprite;
+            renderer.layer = 10;
         }
 
         void update();

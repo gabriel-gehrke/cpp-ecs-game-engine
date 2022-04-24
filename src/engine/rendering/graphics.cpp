@@ -1,41 +1,52 @@
 #include "engine/rendering/graphics.hpp"
 #include <iostream>
-// #include <queue>
+#include <queue>
+#include <memory>
 
-// // TASK QUEUEING / Z-BUFFERING
-// struct Task
-// {
-//     int layer;
+/**** General Variables ****/
 
-//     virtual void render() = 0;
-//     bool operator<(const Task& b) {
-//         return this->layer < b.layer;
-//     }
-// };
-// struct TexTask : Task
-// {
-//     SDL_Texture* tex;
-//     SDL_Rect src;
-//     SDL_Rect dest;
-//     float rotation;
-//     int layer;
-
-//     void render()
-//     {
-
-//     }
-// } 
-// static std::priority_queue<Task> z_buffer;
-
-
-// general variables
-static SDL_Window* window;
-static SDL_Renderer* renderer;
+static SDL_Window *window;
+static SDL_Renderer *renderer;
 static Color background = Color::black();
 static uint width;
 static uint height;
 
-static void set_color(const Color& color)
+
+/**** Z-Buffer ****/
+
+struct Task
+{
+    int layer;
+
+    virtual void render() const = 0;
+};
+struct CopyTask : Task
+{
+    SDL_Texture *texture;
+    SDL_Rect src;
+    SDL_Rect dest;
+
+    virtual void render() const
+    {
+        SDL_RenderCopy(renderer, texture, &src, &dest);
+    }
+};
+struct CopyExTask : CopyTask
+{
+    float rotation;
+
+    void render() const
+    {
+        SDL_RenderCopyEx(renderer, texture, &src, &dest, rotation, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
+    }
+};
+auto _compare = [](const std::unique_ptr<Task>& l, const std::unique_ptr<Task>& r) { return l->layer > r->layer; };
+static std::priority_queue<std::unique_ptr<Task>, std::vector<std::unique_ptr<Task>>, decltype(_compare)> z_buffer(_compare);
+
+
+/**** Implementation ****/
+
+static void set_color(const Color &color)
 {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 }
@@ -74,23 +85,25 @@ void Graphics::clear()
 
 void Graphics::refresh()
 {
-    // size_t s = z_buffer.size();
-    // for (size_t i = 0; i < s; i++)
-    // {
-    //     const Task& t = z_buffer.top();
-    //     draw_sprite
+    const size_t s = z_buffer.size();
+    for (size_t i = 0; i < s; i++)
+    {
+        const std::unique_ptr<Task>& t = z_buffer.top();
+        //std::cout << t->layer << " ";
+        t->render();
 
-    //     z_buffer.pop();
-    // }
+        z_buffer.pop();
+    }
+    //std::cout << std::endl;
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::set_window_title(const char* s)
+void Graphics::set_window_title(const char *s)
 {
     SDL_SetWindowTitle(window, s);
 }
 
-void Graphics::draw_rectangle(int x, int y, int w, int h, const Color& color)
+void Graphics::draw_rectangle(int x, int y, int w, int h, const Color &color)
 {
     set_color(color);
     SDL_Rect rect = {
@@ -102,12 +115,12 @@ void Graphics::draw_rectangle(int x, int y, int w, int h, const Color& color)
     SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Graphics::draw_circle(int x, int y, int r, const Color& color)
+void Graphics::draw_circle(int x, int y, int r, const Color &color)
 {
     set_color(color);
 
     // https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
-    
+
     const int32_t diameter = (r * 2);
 
     int _x = (r - 1);
@@ -144,43 +157,37 @@ void Graphics::draw_circle(int x, int y, int r, const Color& color)
     }
 }
 
-void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color& color)
+void Graphics::draw_line(int x1, int y1, int x2, int y2, const Color &color)
 {
     set_color(color);
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-void Graphics::draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation)
-{
-    const SDL_Rect src = {
-        .x = 0, 
-        .y = 0, 
-        .w = (int) sprite->width, 
-        .h = (int) sprite->height
-    };
-    const SDL_Rect dest = {
-        .x = x1,
-        .y = y1,
-        .w = x2 - x1,
-        .h = y2 - y1
-    };
-
-    // draw with default rotation center point (NULL)
-    SDL_RenderCopyEx(renderer, sprite->texture, &src, &dest, rotation, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
-}
-
-SDL_Texture* Graphics::create_texture(SDL_Surface* surface)
+SDL_Texture *Graphics::create_texture(SDL_Surface *surface)
 {
     return SDL_CreateTextureFromSurface(renderer, surface);
 }
 
-void Graphics::draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest)
+void Graphics::draw_texture(SDL_Texture *texture, const SDL_Rect &src, const SDL_Rect &dest, int layer)
 {
-    SDL_RenderCopy(renderer, texture, &src, &dest);
+    auto* t = new CopyTask();
+    t->layer = layer;
+
+    t->texture = texture;
+    t->src = src;
+    t->dest = dest;
+    z_buffer.push(std::unique_ptr<Task>(t));
 }
 
-// void Graphics::enqueue_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, int layer)
-// {
-//     Task t = {.texture = texture, .src = src, .dest = dest, .layer = layer};
-//     z_buffer.push(t);
-// }
+void Graphics::draw_texture(SDL_Texture *texture, const SDL_Rect &src, const SDL_Rect &dest, float rotation, int layer)
+{
+    CopyExTask* t = new CopyExTask();
+    t->layer = layer;
+
+    // draw with default rotation center point (NULL)
+    t->texture = texture;
+    t->src = src;
+    t->dest = dest;
+    t->rotation = rotation;
+    z_buffer.push(std::unique_ptr<Task>(t));
+}

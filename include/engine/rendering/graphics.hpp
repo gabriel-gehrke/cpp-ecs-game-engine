@@ -37,11 +37,8 @@ class Graphics
         static void draw_circle(int2 p, int r, const Color& color) {return draw_circle(p.x, p.y, r, color);}
         static void draw_line(int x1, int y1, int x2, int y2, const Color& color);
         static void draw_line(const int2& v, const int2& w, const Color& color) {return draw_line(v.x, v.y, w.x, w.y, color);}
-        static void draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation);
-        static void draw_sprite(const Sprite* sprite, int2 v, int2 w, float rotation) {return draw_sprite(sprite, v.x, v.y, w.x, w.y, rotation);}
-
-        //static void enqueue_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, int layer);
-        static void draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest);
+        static void draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, int layer);
+        static void draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, float rotation, int layer);
 
         static int2 get_size();
         static SDL_Texture* create_texture(SDL_Surface* surface);

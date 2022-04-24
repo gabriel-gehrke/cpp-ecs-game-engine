@@ -83,5 +83,5 @@ void UIText::update()
     const SDL_Rect src = {0, 0, w, h};
     const SDL_Rect dest = {pos.x, pos.y, w, h};
 
-    Graphics::draw_texture(this->cached_texture, src, dest);
+    Graphics::draw_texture(this->cached_texture, src, dest, std::numeric_limits<int>().max());
 }

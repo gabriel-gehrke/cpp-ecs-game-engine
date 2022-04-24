@@ -22,5 +22,8 @@ void SpriteRenderer::draw()
     const int2 upleft = cam.world_to_screenpos(pos.x - hscale.x, pos.y + hscale.y);
     const int2 botright = cam.world_to_screenpos(pos.x + hscale.x, pos.y - hscale.y);
 
-    Graphics::draw_sprite(this->sprite, upleft, botright, rot);
+    SDL_Rect src = {.x = 0, .y = 0, .w = (int) sprite->width, .h = (int) sprite->height};
+    SDL_Rect dest = {.x = upleft.x, .y = upleft.y, .w = botright.x - upleft.x, botright.y - upleft.y};
+
+    Graphics::draw_texture(this->sprite->texture, src, dest, rot, this->layer);
 }

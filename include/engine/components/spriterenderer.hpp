@@ -7,6 +7,7 @@ class SpriteRenderer: public Renderer
 {
     public:
         Sprite* sprite;
+        int layer = 0;
 
         SpriteRenderer(Entity& e) : Renderer(e) {}
         Bounds bounds() const;
