@@ -64,7 +64,6 @@ void UIText::set_color(const Color& color)
 
 void UIText::update()
 {
-    rerender();
     if (this->cached_texture == NULL)
     {
         throw std::runtime_error(std::string("UIText texture is NULL!"));
@@ -84,6 +83,5 @@ void UIText::update()
     const SDL_Rect src = {0, 0, w, h};
     const SDL_Rect dest = {pos.x, pos.y, w, h};
 
-    //std::cout << "drawing" << std::endl;
     Graphics::draw_texture(this->cached_texture, src, dest);
 }
