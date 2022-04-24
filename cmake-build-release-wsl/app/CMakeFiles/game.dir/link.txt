@@ -1,1 +1,0 @@
-/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/game.dir/__/src/game/main.cpp.o  -o game  ../src/libengine_lib.a -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2 -lSDL2_image -lSDL2_ttf 

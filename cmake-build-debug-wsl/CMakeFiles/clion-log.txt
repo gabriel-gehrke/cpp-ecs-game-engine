@@ -1,7 +1,0 @@
-C:\WINDOWS\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c "export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd /mnt/c/Users/johnd/OneDrive/workspace/cpp/cpp-ecs-game-engine/cmake-build-debug-wsl && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' -S /mnt/c/Users/johnd/OneDrive/workspace/cpp/cpp-ecs-game-engine -B /mnt/c/Users/johnd/OneDrive/workspace/cpp/cpp-ecs-game-engine/cmake-build-debug-wsl"
-Adding src-directory
-Adding app-directory
-Adding test-directory
--- Configuring done
--- Generating done
--- Build files have been written to: /mnt/c/Users/johnd/OneDrive/workspace/cpp/cpp-ecs-game-engine/cmake-build-debug-wsl

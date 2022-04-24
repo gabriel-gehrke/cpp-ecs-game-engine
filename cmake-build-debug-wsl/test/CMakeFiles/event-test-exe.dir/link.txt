@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/event-test-exe.dir/engine/event/event-test.cpp.o  -o event-test-exe  ../src/libengine_lib.a -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2 -lSDL2_image -lSDL2_ttf 
