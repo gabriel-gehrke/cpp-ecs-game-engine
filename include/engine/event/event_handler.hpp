@@ -1,7 +1,8 @@
 #pragma once
 
+
 template<class EVENT>
-class IEventHandler {
+class EventHandler {
 public:
     virtual void handle(EVENT) = 0;
 };

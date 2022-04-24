@@ -26,10 +26,11 @@ make
 cmake
 libsdl2-dev
 libsdl2-image-dev
+libsdl2-ttf-dev
 ```
 e.g.: (on Ubuntu 20 / Debian 11)
 ```
-sudo apt update && sudo apt install g++ make cmake python3 libsdl2-dev libsdl2-image-dev
+sudo apt update && sudo apt install g++ make cmake python3 libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 ```
 
 Note: the actual package names may differ for your distro and package manager.
@@ -50,26 +51,3 @@ After the build process finished you find the...
 * produced engine library in the build/src/ directory
 * produced test executable in the build/test/ directory 
 
-### Possible Problems
-
-CMake might have a Problem finding the SDL2_image lib on your System if you are on a x64 Linux System. 
-This is because the SDL2_image library has currently no cmake configuration in the repo. 
-To let CMake recognize the library nevertheless, you have to insert the missing CMake-configuration.<br>
-In that case CMake won't build the MakeFile and stop when running ```cmake ..```. <br>
-If that's the case do the following:
-
-* Go to /usr/lib/x86_64-linux-gnu/cmake 
-* Create a directory called "sdl2_image"
-* Switch into the directory
-* Create a file called sdl2_image-config.cmake (This will later be our SDL2_image cmake configuration file)
-* Put the following into the file:
-```
-set(prefix "/usr")
-set(exec_prefix "${prefix}")
-set(libdir "${prefix}/lib/x86_64-linux-gnu")
-set(SDL2_IMAGE_PREFIX "/usr")
-set(SDL2_IMAGE_EXEC_PREFIX "/usr")
-set(SDL2_IMAGE_INCLUDE_DIRS "${prefix}/include/SDL2_image")
-set(SDL2_IMAGE_LIBRARIES "-lSDL2_image")
-```
-Now CMake should be able to find the Library and should be able to create the MakeFile.

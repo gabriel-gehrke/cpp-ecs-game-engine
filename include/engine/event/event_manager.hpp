@@ -2,7 +2,7 @@
 
 #include "event_handler.hpp"
 
-#include <unordered_map>
+#include <map>
 
 
 template<typename EVENT>
@@ -14,7 +14,7 @@ private:
     /**
      * Map that maps generated tokens to event_listener (aka pointer to function that return void and receive the given EVENT-Type as input)
      */
-    const std::unordered_map<int, IEventHandler<EVENT>*> event_listener;
+    const std::map<int, EventHandler<EVENT>*> event_listener;
 
 
 public:
@@ -28,7 +28,8 @@ public:
      * @return  Non-zero identifier-token if successfully registered
      *          -1, if the function_pointer is already registered
      */
-    int register_listener(IEventHandler<EVENT>*);
+
+    int register_listener(EventHandler<EVENT>*);
 
     /**
      * Removes an event-listener from the event-manager instance.
@@ -39,9 +40,48 @@ public:
     bool unregister_listener(int token);
 
     /**
+     * Returns the number of registered listeners
+     * @return Number of listeners
+     */
+    int number_of_registered_listener();
+
+    /**
      * Fires the given event and notifies every listener
      * @param event_to_fire The event to pass to the listeners
      */
     void fire_event(EVENT event_to_fire);
 
 };
+
+
+template<typename EVENT>
+int EventManager<EVENT>::register_listener(EventHandler<EVENT> *new_event_listener) {
+
+    for(auto const& [_, listener] : event_listener)
+        if(listener == new_event_listener)
+            return -1;
+
+    event_listener.emplace(std::make_pair<int, EventHandler<EVENT>>(token_counter, new_event_listener));
+    return token_counter++;
+}
+
+template<typename EVENT>
+bool EventManager<EVENT>::unregister_listener(const int token) {
+    return event_listener.erase(token);
+}
+
+template<typename EVENT>
+void EventManager<EVENT>::fire_event(const EVENT event_to_fire) {
+    for(auto const& [_, listener] : event_listener){
+        listener->handle(event_to_fire);
+    }
+
+}
+
+template<typename EVENT>
+int EventManager<EVENT>::number_of_registered_listener() {
+    return event_listener.size();
+}
+
+template<typename EVENT>
+EventManager<EVENT>::EventManager() : token_counter(0), event_listener(std::map<int, EventHandler<EVENT>*>()) {}

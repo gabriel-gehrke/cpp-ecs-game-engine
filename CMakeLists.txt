@@ -27,23 +27,22 @@ set(EXEC_NAME game)
 # If you set any CMAKE_ variables, that can go here.
 # (But usually don't do this, except maybe for C++ standard)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+
+# Include of CMake libs
+include(CTest)
+INCLUDE(FindPkgConfig)
 
 
 # Find packages go here.
 # These are like the dependencies of gradle/maven
 
-# Add SDL2 library
-find_package(SDL2 REQUIRED)
-# Add SDL2 image
-find_package(SDL2_image REQUIRED)
-
-#find_file(SDL2_INCLUDE_DIR NAME SDL.h HINTS SDL2)
-#find_library(SDL2_LIBRARY NAME SDL2)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+PKG_SEARCH_MODULE(SDL2TTF REQUIRED SDL2_ttf>=2.0.0)
 
 
-# Include of CMake libs
-include(CTest)
 
 
 # Build resources

@@ -2,6 +2,7 @@
 
 add_executable(event-test-exe engine/event/event-test.cpp)
 target_link_libraries(event-test-exe ${ENGINE_LIB_NAME})
+
 add_test(NAME Event-System-Test
         COMMAND event-test-exe)
 

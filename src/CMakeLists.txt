@@ -13,12 +13,15 @@ list(REMOVE_ITEM PROJECT_SOURCE ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
 # create the engine lib with all source and header files
 add_library(${ENGINE_LIB_NAME} ${PROJECT_SOURCE} ${HEADER})
+
 # link SDL2 and SDL2_image lib to the engine lib
+
 target_link_libraries(${ENGINE_LIB_NAME} ${SDL2_LIBRARIES})
-target_link_libraries(${ENGINE_LIB_NAME} SDL2_image)
+target_link_libraries(${ENGINE_LIB_NAME} ${SDL2IMAGE_LIBRARIES})
+target_link_libraries(${ENGINE_LIB_NAME} ${SDL2TTF_LIBRARIES})
 
 
-target_include_directories(${ENGINE_LIB_NAME} PUBLIC ../include)
+target_include_directories(${ENGINE_LIB_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_compile_features(${ENGINE_LIB_NAME} PUBLIC cxx_std_17)
 
 source_group(
