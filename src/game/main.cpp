@@ -6,6 +6,8 @@
 #include "engine/components/spriterenderer.hpp"
 #include "engine/ui/text.hpp"
 #include "engine/input.hpp"
+#include "engine/io/serialize.hpp"
+
 #include <cstdlib>
 
 //static Engine engine = Engine();
@@ -40,13 +42,20 @@ class GameController : public Component
         }
 };
 
+
+
 int main()
 {
-    auto engine = Engine();
+
+    int x = 0;
+
+
+
+    //auto engine = Engine();
     //engine.camera = Camera(5.0f);
 
     // hand over control to engine
-    engine.loop();
+    // engine.loop();
 
     return 0;
 }
