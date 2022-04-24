@@ -1,10 +1,37 @@
 #include "engine/rendering/graphics.hpp"
 #include <iostream>
+// #include <queue>
 
+// // TASK QUEUEING / Z-BUFFERING
+// struct Task
+// {
+//     int layer;
+
+//     virtual void render() = 0;
+//     bool operator<(const Task& b) {
+//         return this->layer < b.layer;
+//     }
+// };
+// struct TexTask : Task
+// {
+//     SDL_Texture* tex;
+//     SDL_Rect src;
+//     SDL_Rect dest;
+//     float rotation;
+//     int layer;
+
+//     void render()
+//     {
+
+//     }
+// } 
+// static std::priority_queue<Task> z_buffer;
+
+
+// general variables
 static SDL_Window* window;
 static SDL_Renderer* renderer;
 static Color background = Color::black();
-
 static uint width;
 static uint height;
 
@@ -47,6 +74,14 @@ void Graphics::clear()
 
 void Graphics::refresh()
 {
+    // size_t s = z_buffer.size();
+    // for (size_t i = 0; i < s; i++)
+    // {
+    //     const Task& t = z_buffer.top();
+    //     draw_sprite
+
+    //     z_buffer.pop();
+    // }
     SDL_RenderPresent(renderer);
 }
 
@@ -143,3 +178,9 @@ void Graphics::draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL
 {
     SDL_RenderCopy(renderer, texture, &src, &dest);
 }
+
+// void Graphics::enqueue_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, int layer)
+// {
+//     Task t = {.texture = texture, .src = src, .dest = dest, .layer = layer};
+//     z_buffer.push(t);
+// }

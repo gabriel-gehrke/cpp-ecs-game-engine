@@ -8,7 +8,7 @@ void Physics::step()
     const size_t size = this->colliders.size();
 
     // basic swapping algorithm
-    for (auto i = size; i != 1; i--)
+    for (auto i = size; i > 1; i--)
     {
         auto index1 = i - 1;
         auto index2 = rand32() % index1;

@@ -12,11 +12,13 @@
 
 #include "engine/vectors.hpp"
 #include "engine/random.hpp"
+#include "engine/component.hpp"
 
 class Engine;
 class Scene;
 class Component;
 
+static const inline float DEG_TO_RAD = ((float)M_PIf32x / 180.0f);
 
 class Entity
 {
@@ -46,6 +48,29 @@ class Entity
             return this->component_map.end();
         }
 
+        // returns the upwards direction of the object
+        float2 up() const
+        {
+            const float radians = this->rotation * DEG_TO_RAD;
+            return float2(std::sin(radians), std::cos(radians));
+        }
+
+        float2 right() const
+        {
+            const float radians = (this->rotation + 90.0f) * DEG_TO_RAD;
+            return float2(std::sin(radians), std::cos(radians));
+        }
+
+        void set_up(const float2& v)
+        {
+            this->rotation = std::atan2(v.x, v.y) / DEG_TO_RAD;
+        }
+
+        void set_right(const float2& v)
+        {
+
+        }
+
         // checks if a component of the specified type is attached to the entity
         template<typename T> bool has_component() const
         {
@@ -67,6 +92,7 @@ class Entity
             T* t = new T(*this);
             this->component_map.emplace(std::type_index(typeid(T)), t);
 
+            static_cast<Component*>(t)->awake();
             return *t;
         }
 

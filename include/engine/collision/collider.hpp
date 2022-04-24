@@ -5,6 +5,8 @@
 #include "engine/rendering/bounds.hpp"
 #include "engine/collision/segment.hpp"
 
+#include <vector>
+
 class Collider : public Renderer
 {
     public:

@@ -1,49 +1,38 @@
 #include "engine/engine.hpp"
-#include "engine/rendering/sprite.hpp"
-#include "engine/collision/collider.hpp"
-#include "engine/component.hpp"
-#include "engine/components/rigidbody.hpp"
-#include "engine/components/spriterenderer.hpp"
 #include "engine/ui/text.hpp"
 #include "engine/input.hpp"
+#include "game/charactercontroller.hpp"
 #include <cstdlib>
+#include <iostream>
 
-//static Engine engine = Engine();
+static Engine engine = Engine();
 
 class GameController : public Component
 {
     public:
+        Entity* player;
+
         GameController(Entity& e) : Component(e)
         {
 
         }
 
-        void start()
+        void awake()
         {
-            // create character
-
-            // sprite
-            /*
-            Sprite* character_sprite = new Sprite();
-            *character_sprite = Sprite::load("guy.png");
-            {
-                auto& e = engine.scene.new_entity();
-                auto& r = e.add_component<SpriteRenderer>();
-                r.sprite = character_sprite;
-            }
-            */
+            player = &engine.scene.new_entity();
+            player->add_component<CharacterController>();
         }
 
         void update()
         {
-            // main g
+            
         }
 };
 
 int main()
 {
-    auto engine = Engine();
-    //engine.camera = Camera(5.0f);
+    engine.camera = Camera(5.0f);
+    engine.scene.new_entity().add_component<GameController>();
 
     // hand over control to engine
     engine.loop();

@@ -40,6 +40,7 @@ class Graphics
         static void draw_sprite(const Sprite* sprite, int x1, int y1, int x2, int y2, float rotation);
         static void draw_sprite(const Sprite* sprite, int2 v, int2 w, float rotation) {return draw_sprite(sprite, v.x, v.y, w.x, w.y, rotation);}
 
+        //static void enqueue_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest, int layer);
         static void draw_texture(SDL_Texture* texture, const SDL_Rect& src, const SDL_Rect& dest);
 
         static int2 get_size();

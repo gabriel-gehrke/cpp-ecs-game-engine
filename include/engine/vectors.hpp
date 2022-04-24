@@ -2,6 +2,8 @@
 #include <string>
 #include <cmath>
 
+static const float EPSILON = 1E-4;
+
 struct float2
 {
     public:

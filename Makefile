@@ -1,5 +1,5 @@
 # compiler arguments
-CPP_ARGS := -std=c++17 -Wall -O3 -march=native -ffast-math
+CPP_ARGS := -std=c++17 -Wall -g -O3 -march=native -ffast-math
 
 # configure important directories
 BUILD_DIR := ./build
