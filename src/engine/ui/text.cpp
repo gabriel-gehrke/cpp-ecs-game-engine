@@ -64,7 +64,6 @@ void UIText::set_color(const Color& color)
 
 void UIText::update()
 {
-    rerender();
     if (this->cached_texture == NULL)
     {
         throw std::runtime_error(std::string("UIText texture is NULL!"));
